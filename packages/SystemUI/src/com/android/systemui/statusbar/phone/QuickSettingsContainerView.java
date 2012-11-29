@@ -166,6 +166,7 @@ public class QuickSettingsContainerView extends FrameLayout {
     }
 
 
+
     private boolean isLandscape() {
         final boolean isLandscape =
             Resources.getSystem().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
@@ -202,4 +203,3 @@ public class QuickSettingsContainerView extends FrameLayout {
     }
 
 }
-

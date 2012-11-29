@@ -294,6 +294,10 @@ public class TabletStatusBar extends BaseStatusBar implements
         mNetworkController.addCombinedLabelView(
                 (TextView)mBarContents.findViewById(R.id.network_text));
 
+        // Add QuickSettings
+        mNotificationPanel.setupQuickSettings(this, mNetworkController, mBluetoothController, 
+                mBatteryController, mLocationController);
+
         mStatusBarView.setIgnoreChildren(0, mNotificationTrigger, mNotificationPanel);
 
         WindowManager.LayoutParams lp = mNotificationPanelParams = new WindowManager.LayoutParams(
@@ -1053,6 +1057,10 @@ public class TabletStatusBar extends BaseStatusBar implements
     public void animateExpandNotificationsPanel() {
         mHandler.removeMessages(MSG_OPEN_NOTIFICATION_PANEL);
         mHandler.sendEmptyMessage(MSG_OPEN_NOTIFICATION_PANEL);
+    }
+
+    public void collapse() {
+        animateCollapsePanels();
     }
 
     public void animateCollapsePanels() {
