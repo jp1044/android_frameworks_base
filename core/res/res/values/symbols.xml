@@ -1898,6 +1898,7 @@
   <!-- Lock screen always show battery -->
   <java-symbol type="string" name="lockscreen_discharging" />
 
+<<<<<<< HEAD
   <!-- HW rotation lock -->
   <java-symbol type="string" name="toast_rotation_unlocked" />
   <java-symbol type="string" name="toast_rotation_locked" />
@@ -1916,5 +1917,13 @@
 
 
   <java-symbol type="bool" name="config_hasHardwareKeys" />
+=======
+  <!-- Hide Navbar -->
+  <java-symbol type="layout" name="global_actions_navbar_mode" />
+  <java-symbol type="id" name="navbartoggle" />
+  <java-symbol type="id" name="navbarhome" />
+  <java-symbol type="id" name="navbarback" />
+  <java-symbol type="id" name="navbarmenu" />
+>>>>>>> 8770e72... SysUI:  NavBar & Widgets rollup [1/2][WIP]
 
 </resources>
