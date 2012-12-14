@@ -361,6 +361,8 @@ public class ExtendedPropertiesUtils {
                 }
             }
         }
+        sIsTablet = Integer.parseInt(ExtendedPropertiesUtils.getProperty
+                    ("com.android.systemui.layout")) >= 1000;
     }
 
     /**
