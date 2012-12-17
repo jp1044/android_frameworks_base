@@ -2645,9 +2645,14 @@ public final class Settings {
          */
         public static final String QS_DYNAMIC_DOCK_BATTERY = "qs_dyanmic_dock_battery";
 
+       /**
+        * Override and forcefully disable the fullscreen keyboard
+        * @hide
+        */
+        public static final String DISABLE_FULLSCREEN_KEYBOARD = "disable_fullscreen_keyboard";
+
         /**
          * Quick Settings Panel Dynamic Tiles
-         *
          * @hide
          */
         public static final String QS_DYNAMIC_WIFI = "qs_dyanmic_wifi";
