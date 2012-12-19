@@ -78,6 +78,11 @@ public class CircleBattery extends ImageView {
     private Paint   mPaintSystem;
     private Paint   mPaintRed;
 
+    private int mCircleColor;
+    private int mCircleTextColor;
+    private int mCircleAnimSpeed;
+    private int mCircleReset;
+
     // runnable to invalidate view via mHandler.postDelayed() call
     private final Runnable mInvalidate = new Runnable() {
         public void run() {
@@ -97,16 +102,52 @@ public class CircleBattery extends ImageView {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_BATTERY), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_CIRCLE_BATTERY_COLOR), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_CIRCLE_BATTERY_TEXT_COLOR), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_CIRCLE_BATTERY_ANIMATIONSPEED), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_CIRCLE_BATTERY_RESET), false, this);
             onChange(true);
         }
 
         @Override
         public void onChange(boolean selfChange) {
+
             int batteryStyle = (Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.STATUS_BAR_BATTERY, 0));
 
-            mActivated = (batteryStyle == BatteryController.BATTERY_STYLE_CIRCLE || batteryStyle == BatteryController.BATTERY_STYLE_CIRCLE_PERCENT);
+            Resources res = getResources();
+
+            batteryStyle = (Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.STATUS_BAR_BATTERY, 0));
+
+            mCircleColor = (Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.STATUS_BAR_CIRCLE_BATTERY_COLOR, res.getColor(R.color.holo_blue_dark)));
+            mCircleTextColor = (Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.STATUS_BAR_CIRCLE_BATTERY_TEXT_COLOR, res.getColor(R.color.holo_blue_dark)));
+            mCircleAnimSpeed = (Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.STATUS_BAR_CIRCLE_BATTERY_ANIMATIONSPEED, 3));
+
+            if (Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.STATUS_BAR_CIRCLE_BATTERY_RESET, 0) == 1) {
+                mCircleColor = res.getColor(R.color.holo_blue_dark);
+                mCircleTextColor = res.getColor(R.color.holo_blue_dark);
+            }
+
+            /*
+             * initialize vars and force redraw
+             */
+            initializeCircleVars();
+            mRectLeft = null;
+            mCircleSize = 0;
+
+            mActivated = (batteryStyle == BatteryController.BATTERY_STYLE_CIRCLE ||
+                          batteryStyle == BatteryController.BATTERY_STYLE_CIRCLE_PERCENT);
             mPercentage = (batteryStyle == BatteryController.BATTERY_STYLE_CIRCLE_PERCENT);
+
 
             setVisibility(mActivated && isBatteryPresent() ? View.VISIBLE : View.GONE);
             if (mBatteryReceiver != null) {
@@ -194,33 +235,8 @@ public class CircleBattery extends ImageView {
         settingsObserver.observe();
         mBatteryReceiver = new BatteryReceiver(mContext);
 
-        // initialize and setup all paint variables
-        // stroke width is later set in initSizeBasedStuff()
-        Resources res = getResources();
+        initializeCircleVars();
 
-        mPaintFont = new Paint();
-        mPaintFont.setAntiAlias(true);
-        mPaintFont.setDither(true);
-        mPaintFont.setStyle(Paint.Style.STROKE);
-
-        mPaintGray = new Paint(mPaintFont);
-        mPaintSystem = new Paint(mPaintFont);
-        mPaintRed = new Paint(mPaintFont);
-
-        mPaintGray.setStrokeCap(Paint.Cap.BUTT);
-        mPaintSystem.setStrokeCap(Paint.Cap.BUTT);
-        mPaintRed.setStrokeCap(Paint.Cap.BUTT);
-
-        mPaintFont.setColor(res.getColor(R.color.holo_blue_dark));
-        mPaintSystem.setColor(res.getColor(R.color.holo_blue_dark));
-        // could not find the darker definition anywhere in resources
-        // do not want to use static 0x404040 color value. would break theming.
-        mPaintGray.setColor(res.getColor(R.color.darker_gray));
-        mPaintRed.setColor(res.getColor(R.color.holo_red_light));
-
-        // font needs some extra settings
-        mPaintFont.setTextAlign(Align.CENTER);
-        mPaintFont.setFakeBoldText(true);
     }
 
     protected int getLevel() {
@@ -289,20 +305,16 @@ public class CircleBattery extends ImageView {
 
     protected void drawCircle(Canvas canvas, int level, int animOffset, float textX, RectF drawRect) {
         Paint usePaint = mPaintSystem;
-        int internalLevel = level;
-        boolean unknownStatus = isBatteryStatusUnknown();
+
         // turn red at 14% - same level android battery warning appears
-        if (unknownStatus) {
-            usePaint = mPaintGray;
-            internalLevel = 100; // Draw all the circle;
-        } else if (internalLevel <= 14) {
+        if (level <= 14) {
             usePaint = mPaintRed;
         }
 
         // pad circle percentage to 100% once it reaches 97%
         // for one, the circle looks odd with a too small gap,
         // for another, some phones never reach 100% due to hardware design
-        int padLevel = internalLevel;
+        int padLevel = level;
         if (padLevel >= 97) {
             padLevel = 100;
         }
@@ -313,12 +325,13 @@ public class CircleBattery extends ImageView {
         canvas.drawArc(drawRect, 270 + animOffset, 3.6f * padLevel, false, usePaint);
         // if chosen by options, draw percentage text in the middle
         // always skip percentage when 100, so layout doesnt break
-        if (unknownStatus) {
-            mPaintFont.setColor(usePaint.getColor());
-            canvas.drawText("?", textX, mTextY, mPaintFont);
-        } else if (internalLevel < 100 && mPercentage) {
-            mPaintFont.setColor(usePaint.getColor());
-            canvas.drawText(Integer.toString(internalLevel), textX, mTextY, mPaintFont);
+        if (level < 100 && mPercentage) {
+            if (level <= 14) {
+                mPaintFont.setColor(mPaintRed.getColor());
+            }else {
+                mPaintFont.setColor(mCircleTextColor);
+            }
+            canvas.drawText(Integer.toString(level), textX, mTextY, mPaintFont);
         }
 
     }
@@ -335,6 +348,36 @@ public class CircleBattery extends ImageView {
                    getLevel(),
                    (isBatteryStatusCharging() ? mAnimOffset : 0), mTextLeftX, mRectLeft);
     }
+
+    /***
+     * Initialize the Circle vars for start and observer
+     */
+    private void initializeCircleVars() {
+        // initialize and setup all paint variables
+        // stroke width is later set in initSizeBasedStuff()
+
+        Resources res = getResources();
+
+        mPaintFont = new Paint();
+        mPaintFont.setAntiAlias(true);
+        mPaintFont.setDither(true);
+        mPaintFont.setStyle(Paint.Style.STROKE);
+
+        mPaintGray = new Paint(mPaintFont);
+        mPaintSystem = new Paint(mPaintFont);
+        mPaintRed = new Paint(mPaintFont);
+
+        mPaintSystem.setColor(mCircleColor);
+        // could not find the darker definition anywhere in resources
+        // do not want to use static 0x404040 color value. would break theming.
+        mPaintGray.setColor(res.getColor(R.color.darker_gray));
+        mPaintRed.setColor(res.getColor(R.color.holo_red_light));
+
+        // font needs some extra settings
+        mPaintFont.setTextAlign(Align.CENTER);
+        mPaintFont.setFakeBoldText(true);
+    }
+
 
     /***
      * updates the animation counter
@@ -356,7 +399,7 @@ public class CircleBattery extends ImageView {
         if (mAnimOffset > 360) {
             mAnimOffset = 0;
         } else {
-            mAnimOffset += 3;
+            mAnimOffset += mCircleAnimSpeed;
         }
 
         mHandler.removeCallbacks(mInvalidate);
