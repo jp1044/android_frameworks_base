@@ -593,10 +593,22 @@
     <string name="toggle_ring_vib_silent">Ring/Vib/Silent - Toggle</string>
     <string name="app_killed_message">App Killed</string>
 
+<<<<<<< HEAD
     <!-- Battery status in pie controls -->
     <string name="pie_battery_status_charging">Charging (<xliff:g id="percent">%d</xliff:g>%%)</string>
     <string name="pie_battery_status_full">Charged</string>
     <string name="pie_battery_status_discharging"><xliff:g id="percent">%d</xliff:g>%% remaining</string>
+=======
+    <!-- Label in drop down to identify brightness slider -->
+    <string name="brightness_label">Brightness</string>
+
+    <!-- Recents Ram Bar -->
+    <string name="memory">RAM</string>
+    <!-- [CHAR LIMIT=10] Running services, summary of background processes -->
+    <string name="service_free_mem"><xliff:g id="memory">%1$s</xliff:g> free</string>
+    <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
+    <string name="service_used_mem"><xliff:g id="memory">%1$s</xliff:g> used</string>
+>>>>>>> 1120f72... Framework: Recents RAM bar (1/2)
 
     <!-- Phone status in pie controls -->
     <string name="pie_phone_status_no_service">No service</string>
