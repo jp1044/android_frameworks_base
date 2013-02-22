@@ -1344,7 +1344,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         mSystemDpi = ExtendedPropertiesUtils.getActualProperty("android.dpi");
         mSystemUiDpi = ExtendedPropertiesUtils.getActualProperty("com.android.systemui.dpi");
         mSystemUiLayout = ExtendedPropertiesUtils.getActualProperty("com.android.systemui.layout");
-android.util.Log.d("*********************************************", "UPDATE mSystemUiLayout=" + mSystemUiLayout);
         int mNavigationBarPercent = expDesktop ? 0 : Integer.parseInt(ExtendedPropertiesUtils.getProperty("com.android.systemui.navbar.dpi", "100"));
         mNavBarDpi = mNavigationBarPercent * mSystemUiDpi / 100;
         int mStatusBarPercent = Integer.parseInt(ExtendedPropertiesUtils.getProperty("com.android.systemui.statusbar.dpi", "100"));
@@ -1523,7 +1522,6 @@ android.util.Log.d("*********************************************", "UPDATE mSys
                 mNavigationBarWidthForRotation[mLandscapeRotation] = mNavigationBarWidthForRotation[mSeascapeRotation] =
                 Math.round(navigationBarWidth);
    
-android.util.Log.d("*********************************************", "mSystemUiLayout=" + mSystemUiLayout);
         if (mSystemUiLayout < 600) {
             // 0-599dp: "phone" UI with a separate status & navigation bar
             mHasSystemNavBar = false;
