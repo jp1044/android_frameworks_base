@@ -3023,6 +3023,11 @@ public final class Settings {
         public static final String NOTIFICATION_CONVERT_SOUND_TO_VIBRATION = "convert_sound_to_vibration";
 
         /**
+         * Force dual panel for settings
+         */
+        public static final String FORCE_DUAL_PANEL = "force_dualpanel";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
