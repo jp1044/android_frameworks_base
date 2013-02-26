@@ -1124,4 +1124,5 @@
          Requires config_hasDockBattery set to true. -->
     <string name="config_deviceDockBatteryHandlerLib" translatable="false"></string>
 
+    <bool name="config_hasHardwareKeys">false</bool>
 </resources>

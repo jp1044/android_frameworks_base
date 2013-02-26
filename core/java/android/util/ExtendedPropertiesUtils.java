@@ -254,14 +254,14 @@ public class ExtendedPropertiesUtils {
      * @return device is tablet
      */
     public static boolean isTablet() {
-        int dpi;
-        String prop = readProperty("com.android.systemui.dpi", "0");
+        int layout;
+        String prop = readProperty("com.android.systemui.layout", "0");
         if (isParsableToInt(prop)) {
-            dpi = Integer.parseInt(prop);
+            layout = Integer.parseInt(prop);
         } else {
-            dpi = getActualProperty(prop);
+            layout = getActualProperty(prop);
         }
-        return dpi < 213;
+        return layout >= 1000;
     }
 
     /**

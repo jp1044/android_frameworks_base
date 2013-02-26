@@ -1927,4 +1927,5 @@
   <java-symbol type="drawable" name="ic_navigation_ring_torch" />
   <java-symbol type="drawable" name="ic_navigation_ring_vibrate" />
 
+  <java-symbol type="bool" name="config_hasHardwareKeys" />
 </resources>
