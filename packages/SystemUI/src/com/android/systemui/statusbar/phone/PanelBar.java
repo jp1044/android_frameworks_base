@@ -19,11 +19,15 @@ package com.android.systemui.statusbar.phone;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Slog;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import com.android.systemui.statusbar.BaseStatusBar;
+import com.android.systemui.statusbar.PieControlPanel;
 
 public class PanelBar extends FrameLayout {
     public static final boolean DEBUG = false;
@@ -42,6 +46,9 @@ public class PanelBar extends FrameLayout {
     PanelView mTouchingPanel;
     private int mState = STATE_CLOSED;
     private boolean mTracking;
+    PanelView mFullyOpenedPanel;
+    private BaseStatusBar mStatusBar;
+
 
     float mPanelExpandedFractionSum;
 
@@ -62,6 +69,10 @@ public class PanelBar extends FrameLayout {
     public void addPanel(PanelView pv) {
         mPanels.add(pv);
         pv.setBar(this);
+    }
+
+    public void setStatusBar(BaseStatusBar statusBar) {
+        mStatusBar = statusBar;
     }
 
     public void setPanelHolder(PanelHolder ph) {
@@ -193,6 +204,8 @@ public class PanelBar extends FrameLayout {
             go(STATE_CLOSED);
             onAllPanelsCollapsed();
         }
+
+        if(mStatusBar.mPieControlPanel != null) mStatusBar.mPieControlPanel.animateCollapsePanels();
     }
 
     public void onPanelPeeked() {
