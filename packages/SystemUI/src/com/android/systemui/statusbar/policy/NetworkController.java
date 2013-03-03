@@ -228,7 +228,7 @@ public class NetworkController extends BroadcastReceiver {
 
         // broadcasts
         IntentFilter filter = new IntentFilter();
-	filter.addAction("com.android.settings.LABEL_CHANGED");
+        filter.addAction("com.android.settings.LABEL_CHANGED");
         filter.addAction(WifiManager.RSSI_CHANGED_ACTION);
         filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
         filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
