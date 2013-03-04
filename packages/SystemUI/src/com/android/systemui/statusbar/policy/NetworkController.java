@@ -398,7 +398,7 @@ public class NetworkController extends BroadcastReceiver {
                  action.equals(ConnectivityManager.INET_CONDITION_ACTION)) {
             updateConnectivity(intent);
             refreshViews();
-	 } else if (action.equals("com.android.settings.LABEL_CHANGED")) {
+        } else if (action.equals("com.android.settings.LABEL_CHANGED")) {
             refreshViews();
         } else if (action.equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
             refreshViews();
@@ -1010,7 +1010,7 @@ public class NetworkController extends BroadcastReceiver {
         int N;
         final boolean emergencyOnly = isEmergencyOnly();
 
-	final String customLabel = Settings.System.getString(mContext.getContentResolver(),
+        final String customLabel = Settings.System.getString(mContext.getContentResolver(),
                 Settings.System.CUSTOM_CARRIER_LABEL);
 
         if (!mHasMobileDataFeature) {
@@ -1167,10 +1167,9 @@ public class NetworkController extends BroadcastReceiver {
             }
         }
 
-	if (customLabel != null && customLabel.trim().length() > 0) {
+        if (customLabel != null && customLabel.trim().length() > 0) {
             combinedLabel = customLabel;
             mobileLabel = customLabel;
-            
         }
 
         if (DEBUG) {
