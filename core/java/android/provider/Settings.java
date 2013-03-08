@@ -3668,6 +3668,12 @@ public final class Settings {
                 "navring_4",
         };
 
+        /**  
+         * Give MMS Notifications a breathing effect
+         * @hide
+         */
+        public static final String MMS_BREATH = "mms_breath";
+
         /**
          * Custom navring long press actions
          *
