@@ -3138,6 +3138,24 @@ public final class Settings {
          * @hide
          */
         public static final String NOTIFICATIONS_BEHAVIOUR = "notifications_behaviour";
+        
+        /**
+        * Sets the portrait background of notification drawer
+        * @hide
+        */
+        public static final String NOTIFICATION_BACKGROUND = "notification_background";
+
+        /**
+        * Sets the landscape background of notification drawer
+        * @hide
+        */
+        public static final String NOTIFICATION_BACKGROUND_LANDSCAPE = "notification_background_landscape";
+
+        /**
+        * Sets the alpha (transparency) of notification wallpaper
+        * @hide
+        */
+        public static final String NOTIF_WALLPAPER_ALPHA = "notif_wallpaper_alpha";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
