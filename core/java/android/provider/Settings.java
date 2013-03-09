@@ -1974,6 +1974,13 @@ public final class Settings {
         public static final String VIBRATE_IN_SILENT = "vibrate_in_silent";
 
         /**
+         * wake up when plugged or unplugged
+         *
+         * @hide
+         */
+        public static final String WAKEUP_WHEN_PLUGGED_UNPLUGGED = "wakeup_when_plugged_unplugged";
+
+        /**
          * The mapping of stream type (integer) to its setting.
          */
         public static final String[] VOLUME_SETTINGS = {
