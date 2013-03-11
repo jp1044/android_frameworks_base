@@ -72,6 +72,8 @@ public class NavigationBarView extends LinearLayout {
     private OnTouchListener mRecentsPreloadListener;
     private OnTouchListener mHomeSearchActionListener;
 
+    private boolean mIs600dp;
+
     protected IStatusBarService mBarService;
     final Display mDisplay;
     View mCurrentView = null;
@@ -437,7 +439,7 @@ public class NavigationBarView extends LinearLayout {
         }
         mCurrentView = mRotatedViews[rot];
         mCurrentView.setVisibility(View.VISIBLE);
-        if (NavbarEditor.isDevicePhone()) {
+        if (!mIs600dp) {
             rot = mDisplay.getRotation();
             mVertical = (rot == Surface.ROTATION_90 || rot == Surface.ROTATION_270);
         } else {
