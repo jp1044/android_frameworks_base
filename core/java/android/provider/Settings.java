@@ -2564,6 +2564,42 @@ public final class Settings {
 
         /**
          * Quick Settings Panel Dynamic Tiles
+         * number of tiles per row in quick settings
+         *
+         * @hide
+         */
+        public static final String QUICK_TILES_PER_ROW = "quick_tiles_per_row";
+
+        /**
+         * number of tiles per row in quick settings
+         *
+         * @hide
+         */
+        public static final String QUICK_TILES_PER_ROW_DUPLICATE_LANDSCAPE = "quick_tiles_per_row_duplicate_landscape";
+
+        /**
+         * text color on qs tiles
+         *
+         * @hide
+         */
+        public static final String QUICK_TILES_TEXT_COLOR = "quick_tiles_text_color";
+
+        /**
+         * qs tiles background color
+         *
+         * @hide
+         */
+        public static final String QUICK_TILES_BG_COLOR = "quick_tiles_bg_color";
+
+        /**
+         * qs tiles background color on pressed
+         *
+         * @hide
+         */
+        public static final String QUICK_TILES_BG_PRESSED_COLOR = "quick_tiles_bg_pressed_color";
+
+        /**
+         * Quick Settings Tile Content
          *
          * @hide
          */
@@ -2985,6 +3021,55 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_NOTIF_COUNT = "status_bar_notif_count";
+
+        /**
+         * Enable Stylus Gestures
+         *
+         * @hide
+         */
+        public static final String ENABLE_STYLUS_GESTURES = "enable_stylus_gestures";
+
+        /**
+         * Left Swipe Action
+         *
+         * @hide
+         */
+        public static final String GESTURES_LEFT_SWIPE = "gestures_left_swipe";
+
+        /**
+         * Right Swipe Action
+         *
+         * @hide
+         */
+        public static final String GESTURES_RIGHT_SWIPE = "gestures_right_swipe";
+
+        /**
+         * Up Swipe Action
+         *
+         * @hide
+         */
+        public static final String GESTURES_UP_SWIPE = "gestures_up_swipe";
+
+        /**
+         * down Swipe Action
+         *
+         * @hide
+         */
+        public static final String GESTURES_DOWN_SWIPE = "gestures_down_swipe";
+
+        /**
+         * Long press Action
+         *
+         * @hide
+         */
+        public static final String GESTURES_LONG_PRESS = "gestures_long_press";
+
+        /**
+         * double tap Action
+         *
+         * @hide
+         */
+        public static final String GESTURES_DOUBLE_TAP = "gestures_double_tap";
 
         /**
          * Whether to show the battery bar
