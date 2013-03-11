@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputMethodSubtype;
+import android.widget.TextView;
 
 import com.android.systemui.R;
 import com.android.systemui.statusbar.phone.QuickSettingsContainerView;
@@ -124,6 +125,13 @@ public class InputMethodTile extends QuickSettingsTile {
 
     @Override
     void updateQuickSettings() {
+        TextView tv = (TextView) mTile.findViewById(R.id.tile_textview);
+        tv.setText(mLabel);
+        tv.setTextSize(1, mTileTextSize);
+        if (mTileTextColor != -2) {
+            tv.setTextColor(mTileTextColor);
+        }
+        tv.setCompoundDrawablesWithIntrinsicBounds(0, mDrawable, 0, 0);
         mTile.setVisibility(showTile ? View.VISIBLE : View.GONE);
         super.updateQuickSettings();
     }
