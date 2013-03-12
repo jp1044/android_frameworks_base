@@ -19,7 +19,7 @@ package com.android.systemui.statusbar.phone;
 import com.android.internal.view.RotationPolicy;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.systemui.R;
-
+import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.phone.QuickSettingsModel.BluetoothState;
 import com.android.systemui.statusbar.phone.QuickSettingsModel.RSSIState;
 import com.android.systemui.statusbar.phone.QuickSettingsModel.State;
@@ -82,7 +82,7 @@ import java.util.ArrayList;
 /**
  *
  */
-class QuickSettings {
+public class QuickSettings {
     private static final String TAG = "QuickSettings";
     public static final boolean SHOW_IME_TILE = false;
 
@@ -95,7 +95,7 @@ class QuickSettings {
 
     private DisplayManager mDisplayManager;
     private WifiDisplayStatus mWifiDisplayStatus;
-    private PhoneStatusBar mStatusBarService;
+    private BaseStatusBar mStatusBarService;
     private BluetoothState mBluetoothState;
     private BluetoothAdapter mBluetoothAdapter;
     private WifiManager mWifiManager;
@@ -171,11 +171,11 @@ class QuickSettings {
         mBar = bar;
     }
 
-    public void setService(PhoneStatusBar phoneStatusBar) {
-        mStatusBarService = phoneStatusBar;
+    public void setService(BaseStatusBar statusBar) {
+        mStatusBarService = statusBar;
     }
 
-    public PhoneStatusBar getService() {
+    public BaseStatusBar getService() {
         return mStatusBarService;
     }
 
@@ -183,7 +183,7 @@ class QuickSettings {
         mModel.onImeWindowStatusChanged(visible);
     }
 
-    void setup(NetworkController networkController, BluetoothController bluetoothController,
+    public void setup(NetworkController networkController, BluetoothController bluetoothController,
             BatteryController batteryController, LocationController locationController) {
         mBluetoothController = bluetoothController;
 
@@ -296,7 +296,7 @@ class QuickSettings {
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mContext.startActivityAsUser(intent, new UserHandle(UserHandle.USER_CURRENT));
-        getService().animateCollapsePanels();
+        getService().collapse();
     }
 
     private void addUserTiles(ViewGroup parent, LayoutInflater inflater) {

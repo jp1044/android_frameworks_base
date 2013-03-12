@@ -242,7 +242,8 @@ public class TabletStatusBar extends BaseStatusBar implements
         lp.gravity = getStatusBarGravity();
         lp.setTitle("SystemBar");
         lp.packageName = mContext.getPackageName();
-        mWindowManager.addView(sb, lp);
+        mStatusBarContainer.addView(sb);
+        mWindowManager.addView(mStatusBarContainer, lp);
     }
 
     // last theme that was applied in order to detect theme change (as opposed
@@ -293,6 +294,10 @@ public class TabletStatusBar extends BaseStatusBar implements
                 (TextView)mNotificationPanel.findViewById(R.id.mobile_text));
         mNetworkController.addCombinedLabelView(
                 (TextView)mBarContents.findViewById(R.id.network_text));
+
+        // Add QuickSettings
+        mNotificationPanel.setupQuickSettings(this, mNetworkController, mBluetoothController, 
+                mBatteryController, mLocationController);
 
         mStatusBarView.setIgnoreChildren(0, mNotificationTrigger, mNotificationPanel);
 
@@ -382,11 +387,11 @@ public class TabletStatusBar extends BaseStatusBar implements
     }
 
     private int getNotificationPanelHeight() {
-        final Resources res = mContext.getResources();
-        final Display d = mWindowManager.getDefaultDisplay();
-        final Point size = new Point();
-        d.getRealSize(size);
-        return Math.max(res.getDimensionPixelSize(R.dimen.notification_panel_min_height), size.y);
+        Resources res = mContext.getResources();
+        Display display = mWindowManager.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.y - 25;
     }
 
     @Override
@@ -415,6 +420,7 @@ public class TabletStatusBar extends BaseStatusBar implements
         mNotificationData.clear();
 
         mStatusBarContainer.addView(makeStatusBarView());
+        addPanelWindows();
 
         // recreate notifications.
         for (int i = 0; i < nNotifs; i++) {
@@ -719,18 +725,18 @@ public class TabletStatusBar extends BaseStatusBar implements
     public void showSearchPanel() {
         super.showSearchPanel();
         WindowManager.LayoutParams lp =
-            (android.view.WindowManager.LayoutParams) mStatusBarView.getLayoutParams();
+            (android.view.WindowManager.LayoutParams) mStatusBarContainer.getLayoutParams();
         lp.flags &= ~WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
-        mWindowManager.updateViewLayout(mStatusBarView, lp);
+        mWindowManager.updateViewLayout(mStatusBarContainer, lp);
     }
 
     @Override
     public void hideSearchPanel() {
         super.hideSearchPanel();
         WindowManager.LayoutParams lp =
-            (android.view.WindowManager.LayoutParams) mStatusBarView.getLayoutParams();
+            (android.view.WindowManager.LayoutParams) mStatusBarContainer.getLayoutParams();
         lp.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
-        mWindowManager.updateViewLayout(mStatusBarView, lp);
+        mWindowManager.updateViewLayout(mStatusBarContainer, lp);
     }
 
     public int getStatusBarHeight() {
@@ -1055,6 +1061,10 @@ public class TabletStatusBar extends BaseStatusBar implements
         mHandler.sendEmptyMessage(MSG_OPEN_NOTIFICATION_PANEL);
     }
 
+    public void collapse() {
+        animateCollapsePanels();
+    }
+
     public void animateCollapsePanels() {
         animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE);
     }
@@ -1235,6 +1245,8 @@ public class TabletStatusBar extends BaseStatusBar implements
             mFakeSpaceBar.setVisibility(((vis & InputMethodService.IME_VISIBLE) != 0)
                     ? View.VISIBLE : View.GONE);
         }
+
+        if (mNotificationPanel.mQS != null) mNotificationPanel.mQS.setImeWindowStatus(vis > 0);
     }
 
     @Override

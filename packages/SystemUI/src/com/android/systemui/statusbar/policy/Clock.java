@@ -135,6 +135,18 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
 
     public Clock(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+
+        mContext = context;
+        TypedArray a = context.obtainStyledAttributes(attrs, com.android.systemui.R.styleable.Clock, defStyle, 0);
+        mShowAlways = a.getBoolean(com.android.systemui.R.styleable.Clock_showAlways, false);
+
+        AM_PM_STYLE = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.STATUS_BAR_AM_PM_STYLE, 2);
+        mClockFormatString = null;
+
+        SettingsObserver observer = new SettingsObserver(new Handler());
+        observer.observe();
+
     }
 
     @Override

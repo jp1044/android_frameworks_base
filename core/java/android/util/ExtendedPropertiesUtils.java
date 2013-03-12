@@ -270,6 +270,8 @@ public class ExtendedPropertiesUtils {
             layout = getActualProperty(prop);
         }
         return layout >= 1000;
+        return getActualProperty("com.android.systemui.layout") >= 1000;
+
     }
 
     /**
