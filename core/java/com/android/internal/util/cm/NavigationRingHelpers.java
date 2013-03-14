@@ -49,14 +49,15 @@ public class NavigationRingHelpers {
     public static String[] getTargetActions(Context context) {
         final ContentResolver cr = context.getContentResolver();
         final String[] result = new String[MAX_ACTIONS];
+        boolean isDefault = true;
 
         for (int i = 0; i < MAX_ACTIONS; i++) {
             result[i] = Settings.System.getString(cr, Settings.System.NAVIGATION_RING_TARGETS[i]);
-            if (TextUtils.equals(result[i], ACTION_NONE)) {
-                result[i] = null;
+            if (result[i] != null) {
+                isDefault = false;
             }
         }
-        if (TextUtils.isEmpty(result[1])) {
+        if (isDefault) {
             resetActionsToDefaults(context);
             result[1] = ACTION_ASSIST;
         }

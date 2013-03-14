@@ -3252,6 +3252,7 @@ public final class Settings {
         public static final String NOTIFICATION_CONVERT_SOUND_TO_VIBRATION = "convert_sound_to_vibration";
 
         /**
+<<<<<<< HEAD
          * Force dual panel for settings
          */
         public static final String FORCE_DUAL_PANEL = "force_dualpanel";
@@ -3277,6 +3278,8 @@ public final class Settings {
         public static final String SYSTEM_POWER_CRT_MODE = "system_power_crt_mode";
 
         /**
+         * Custom navring actions
+         *
          * @hide
          */
         public static final String[] NAVIGATION_RING_TARGETS = new String[] {
@@ -3284,6 +3287,7 @@ public final class Settings {
             "navigation_ring_targets_1",
             "navigation_ring_targets_2",
         };
+
         /**
          * Holds the text for the Carrier label. An empty string
          * will bring the default text back.
@@ -3314,6 +3318,8 @@ public final class Settings {
         * @hide
         */
         public static final String NOTIF_WALLPAPER_ALPHA = "notif_wallpaper_alpha";
+=======
+>>>>>>> upstream/cm-10.1
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
