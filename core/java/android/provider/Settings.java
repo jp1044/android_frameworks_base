@@ -2985,6 +2985,12 @@ public final class Settings {
          * @hide
          */
         public static final String QUIET_HOURS_DIM = "quiet_hours_dim";
+        
+        /**  
+         * Whether to enable lockscreen rotation
+         * @hide
+         */
+        public static final String LOCKSCREEN_AUTO_ROTATE = "lockscreen_auto_rotate";
 
         /**
          * Sets the lockscreen background style
@@ -3317,6 +3323,12 @@ public final class Settings {
         * @hide
         */
         public static final String NOTIF_WALLPAPER_ALPHA = "notif_wallpaper_alpha";
+ 
+        /**
+        * Sets the alpha (transparency) of notifications
+        * @hide
+        */
+        public static final String NOTIF_ALPHA = "notif_alpha";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
