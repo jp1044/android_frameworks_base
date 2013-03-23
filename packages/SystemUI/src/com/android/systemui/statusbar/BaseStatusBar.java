@@ -314,6 +314,10 @@ public abstract class BaseStatusBar extends SystemUI implements
     public void userSwitched(int newUserId) {
         // should be overridden
     }
+ 
+    public Handler getHandler() {
+        return mHandler;
+    }
 
     public boolean notificationIsForCurrentUser(StatusBarNotification n) {
         final int thisUserId = mCurrentUserId;

@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.systemui.R;
-import com.android.systemui.statusbar.phone.PhoneStatusBar;
+import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.phone.QuickSettingsController;
 import com.android.systemui.statusbar.phone.QuickSettingsContainerView;
 import com.android.systemui.statusbar.phone.QuickSettingsTileView;
@@ -32,7 +32,7 @@ public class QuickSettingsTile implements OnClickListener {
     protected int mTileLayout;
     protected int mDrawable;
     protected String mLabel;
-    protected PhoneStatusBar mStatusbarService;
+    protected BaseStatusBar mStatusbarService;
     protected QuickSettingsController mQsc;
 
     protected int mTileTextSize;
@@ -110,7 +110,7 @@ public class QuickSettingsTile implements OnClickListener {
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mContext.startActivityAsUser(intent, new UserHandle(UserHandle.USER_CURRENT));
-        mStatusbarService.animateCollapsePanels();
+        mStatusbarService.collapse();
     }
 
     @Override

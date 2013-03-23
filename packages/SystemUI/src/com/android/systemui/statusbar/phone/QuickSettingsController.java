@@ -49,6 +49,7 @@ import static com.android.internal.util.cm.QSUtils.deviceSupportsUsbTether;
 import static com.android.internal.util.cm.QSUtils.systemProfilesEnabled;
 import static com.android.internal.util.cm.QSUtils.deviceSupportsLte;
 
+import com.android.systemui.statusbar.BaseStatusBar;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -112,11 +113,11 @@ public class QuickSettingsController {
     private final Handler mHandler;
     private BroadcastReceiver mReceiver;
     private ContentObserver mObserver;
-    public PhoneStatusBar mStatusBarService;
+    public BaseStatusBar mStatusBarService;
 
     private InputMethodTile mIMETile;
 
-    public QuickSettingsController(Context context, QuickSettingsContainerView container, PhoneStatusBar statusBarService) {
+    public QuickSettingsController(Context context, QuickSettingsContainerView container, BaseStatusBar statusBarService) {
         mContext = context;
         mContainerView = container;
         mHandler = new Handler();
@@ -248,7 +249,7 @@ public class QuickSettingsController {
         }
     }
 
-    protected void setupQuickSettings() {
+    public void setupQuickSettings() {
         mQuickSettingsTiles.clear();
         mContainerView.removeAllViews();
         // Clear out old receiver
@@ -331,11 +332,11 @@ public class QuickSettingsController {
         }
     };
 
-    void setBar(PanelBar bar) {
+    public void setBar(PanelBar bar) {
         mBar = bar;
     }
 
-    public void setService(PhoneStatusBar phoneStatusBar) {
+    public void setService(BaseStatusBar phoneStatusBar) {
         mStatusBarService = phoneStatusBar;
     }
 

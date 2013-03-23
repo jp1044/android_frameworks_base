@@ -21,7 +21,12 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.ContentResolver;
+import android.database.ContentObserver;
 import android.graphics.Rect;
+import android.net.Uri;
+import android.os.Handler;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Slog;
 import android.view.Gravity;
@@ -45,7 +50,7 @@ import com.android.systemui.statusbar.policy.NetworkController;
 import com.android.systemui.statusbar.policy.NotificationRowLayout;
 import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.phone.PanelBar;
-import com.android.systemui.statusbar.phone.QuickSettings;
+import com.android.systemui.statusbar.phone.QuickSettingsController;
 import com.android.systemui.statusbar.phone.QuickSettingsContainerView;
 
 public class NotificationPanel extends RelativeLayout implements StatusBarPanel,
@@ -81,7 +86,10 @@ public class NotificationPanel extends RelativeLayout implements StatusBarPanel,
     Choreographer mChoreo = new Choreographer();
 
     QuickSettingsContainerView mSettingsContainer;
-    QuickSettings mQS;
+    QuickSettingsController mQS;
+
+    public QuickSettingsCallback mCallback;
+    private TilesChangedObserver mTilesChangedObserver;
 
     // Simple callback used to provide a bar to QuickSettings
     class QuickSettingsCallback extends PanelBar {
@@ -350,13 +358,17 @@ public class NotificationPanel extends RelativeLayout implements StatusBarPanel,
     public void setupQuickSettings(BaseStatusBar statusBar, NetworkController networkController,
             BluetoothController bluetoothController, BatteryController batteryController,
             LocationController locationController) {
-
+        mCallback = new QuickSettingsCallback(mContext, null);
         // Add Quick Settings
         mSettingsContainer = (QuickSettingsContainerView)mSettingsView.findViewById(R.id.quick_settings_container);
-        mQS = new QuickSettings(mContext, mSettingsContainer);
+        mQS = new QuickSettingsController(mContext, mSettingsContainer, statusBar);
         mQS.setService(statusBar);
-        mQS.setBar(new QuickSettingsCallback(mContext, null));
-        mQS.setup(networkController, bluetoothController, batteryController, locationController);
+        mQS.setBar(mCallback);
+        mQS.setupQuickSettings();
+
+        // Start observing for changes
+        mTilesChangedObserver = new TilesChangedObserver(statusBar.getHandler());
+        mTilesChangedObserver.startObserving();
     }
 
     // NB: it will be invisible until you show it
@@ -483,6 +495,56 @@ public class NotificationPanel extends RelativeLayout implements StatusBarPanel,
         if (mSettingsButton != null) {
             mSettingsButton.setEnabled(settingsEnabled);
             updatePanelModeButtons();
+        }
+    }
+
+    /**
+     *  ContentObserver to watch for Quick Settings tiles changes
+     * @author dvtonder
+     *
+     */
+    private class TilesChangedObserver extends ContentObserver {
+        public TilesChangedObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            onChange(selfChange, null);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            if (mSettingsContainer != null) {
+                mQS.setupQuickSettings();
+            }
+        }
+
+        public void startObserving() {
+            final ContentResolver cr = mContext.getContentResolver();
+            cr.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.QUICK_SETTINGS_TILES),
+                    false, this);
+
+            cr.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.QS_DYNAMIC_ALARM),
+                    false, this);
+
+            cr.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.QS_DYNAMIC_BUGREPORT),
+                    false, this);
+
+            cr.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.QS_DYNAMIC_IME),
+                    false, this);
+
+            cr.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.QS_DYNAMIC_USBTETHER),
+                    false, this);
+
+            cr.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.QS_DYNAMIC_WIFI),
+                    false, this);
         }
     }
 }
