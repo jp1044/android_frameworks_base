@@ -1312,10 +1312,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             }
         }
 
-<<<<<<< HEAD
-        getDimensions();
-   
-=======
         mStatusBarHeight = mContext.getResources().getDimensionPixelSize(
                 com.android.internal.R.dimen.status_bar_height);
 
@@ -1415,7 +1411,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             mCanHideNavigationBar = false;
         }
 
->>>>>>> 70f48c6... Port Forward: NavBar Customization
         // For demo purposes, allow the rotation of the HDMI display to be controlled.
         // By default, HDMI locks rotation to landscape.
         if ("portrait".equals(SystemProperties.get("persist.demo.hdmirotation"))) {

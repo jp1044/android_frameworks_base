@@ -928,9 +928,6 @@ public class PhoneStatusBar extends BaseStatusBar {
     }
 
     private void prepareNavigationBarView() {
-<<<<<<< HEAD
-        mNavigationBarView.setListener(mRecentsClickListener,mRecentsPreloadOnTouchListener, mHomeSearchActionListener);
-=======
         mNavigationBarView.reorient();
 
         if (mNavigationBarView.getRecentsButton() != null) {
@@ -941,7 +938,6 @@ public class PhoneStatusBar extends BaseStatusBar {
             mNavigationBarView.getHomeButton().setOnTouchListener(mHomeSearchActionListener);
         }
         mNavigationBarView.getSearchLight().setOnTouchListener(mHomeSearchActionListener);
->>>>>>> 70f48c6... Port Forward: NavBar Customization
         updateSearchPanel();
         mNavigationBarView.reorient();
     }
