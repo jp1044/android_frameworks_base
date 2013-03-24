@@ -230,17 +230,8 @@ public class SearchPanelView extends FrameLayout implements
             ((ViewGroup) mSearchTargetsContainer).setLayoutTransition(transitioner);
         }
         mShowing = show;
-<<<<<<< HEAD
-        if (show && hasValidTargets()) {
-            for (int i = 0; i < mTargetActivities.length; i++) {
-                NavigationRingHelpers.updateDynamicIconIfNeeded(mContext, mGlowPadView,
-                        mTargetActivities[i], i + mStartPosOffset);
-            }
-            NavigationRingHelpers.swapSearchIconIfNeeded(mContext, mGlowPadView);
-=======
         if (show) {
             maybeSwapSearchIcon();
->>>>>>> parent of ef44d82... SystemUi: Navigation bar Quick launch shortcuts (2 of 2)
             if (getVisibility() != View.VISIBLE) {
                 setVisibility(View.VISIBLE);
                 // Don't start the animation until we've created the layer, which is done

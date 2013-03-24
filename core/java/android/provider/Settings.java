@@ -3258,7 +3258,6 @@ public final class Settings {
         public static final String NOTIFICATION_CONVERT_SOUND_TO_VIBRATION = "convert_sound_to_vibration";
 
         /**
-<<<<<<< HEAD
          * Force dual panel for settings
          */
         public static final String FORCE_DUAL_PANEL = "force_dualpanel";
@@ -3332,8 +3331,6 @@ public final class Settings {
         public static final String NOTIF_ALPHA = "notif_alpha";
 
         /**
-=======
->>>>>>> parent of ef44d82... SystemUi: Navigation bar Quick launch shortcuts (2 of 2)
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
