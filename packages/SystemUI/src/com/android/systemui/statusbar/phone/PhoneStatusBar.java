@@ -690,7 +690,7 @@ public class PhoneStatusBar extends BaseStatusBar {
             });
         }
 
-	    // Set notification background
+        // Set notification background
         setNotificationWallpaperHelper();
 
         // Quick Settings (where available, some restrictions apply)
@@ -2964,8 +2964,8 @@ public class PhoneStatusBar extends BaseStatusBar {
         public void onChange(boolean selfChange, Uri uri) {
             setNotificationWallpaperHelper();
             setNotificationAlphaHelper();
-		if (mSettingsContainer != null) {
-		mSettingsContainer.requestLayout();
+            if (mSettingsContainer != null) {
+                mSettingsContainer.requestLayout();
                 mQS.setupQuickSettings();
                 setNotificationWallpaperHelper();
             }
@@ -3017,7 +3017,7 @@ public class PhoneStatusBar extends BaseStatusBar {
                     Settings.System.getUriFor(Settings.System.QUICK_TILES_TEXT_COLOR),
                     false, this);
 
-	    cr.registerContentObserver(
+            cr.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.NOTIF_WALLPAPER_ALPHA),
                     false, this);
             setNotificationWallpaperHelper();
