@@ -2961,7 +2961,9 @@ public class PhoneStatusBar extends BaseStatusBar {
         @Override
         public void onChange(boolean selfChange, Uri uri) {
             if (mSettingsContainer != null) {
+				mSettingsContainer.requestLayout();
                 mQS.setupQuickSettings();
+			    setNotificationWallpaperHelper();
             }
         }
 
