@@ -374,19 +374,13 @@ public class NavigationBarView extends LinearLayout {
         }
         mCurrentView = mRotatedViews[rot];
         mCurrentView.setVisibility(View.VISIBLE);
-<<<<<<< HEAD
         if (!mIs600dp) {
             rot = mDisplay.getRotation();
             mVertical = (rot == Surface.ROTATION_90 || rot == Surface.ROTATION_270);
         } else {
             mVertical = getWidth() > 0 && getHeight() > getWidth();
         }
-        mEditBar = new NavbarEditor((ViewGroup) mCurrentView.findViewById(R.id.container), mVertical);
-        mEditBar.updateKeys();
-        mEditBar.updateLowLights(mCurrentView);
-        toggleButtonListener(true);
-=======
->>>>>>> parent of bb1fdc6... NavigationBar : Customization
+        
 
         mDeadZone = (DeadZone) mCurrentView.findViewById(R.id.deadzone);
 

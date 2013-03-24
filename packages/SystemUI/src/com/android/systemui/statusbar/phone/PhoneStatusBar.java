@@ -921,16 +921,7 @@ public class PhoneStatusBar extends BaseStatusBar {
     }
 
     private void prepareNavigationBarView() {
-<<<<<<< HEAD
         mNavigationBarView.setListener(mRecentsClickListener,mRecentsPreloadOnTouchListener, mHomeSearchActionListener);
-=======
-        mNavigationBarView.reorient();
-
-        mNavigationBarView.getRecentsButton().setOnClickListener(mRecentsClickListener);
-        mNavigationBarView.getRecentsButton().setOnTouchListener(mRecentsPreloadOnTouchListener);
-        mNavigationBarView.getHomeButton().setOnTouchListener(mHomeSearchActionListener);
-        mNavigationBarView.getSearchLight().setOnTouchListener(mHomeSearchActionListener);
->>>>>>> parent of bb1fdc6... NavigationBar : Customization
         updateSearchPanel();
         mNavigationBarView.reorient();
     }
