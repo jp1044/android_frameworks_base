@@ -1914,6 +1914,7 @@
   <!-- Reboot confirmation string -->
   <java-symbol type="string" name="reboot_confirm" />
 
+<<<<<<< HEAD
   <!-- Navigation Ring -->
   <java-symbol type="drawable" name="ic_navigation_ring_blank_normal" />
   <java-symbol type="drawable" name="ic_navigation_ring_blank_activated" />
@@ -1929,4 +1930,6 @@
   <java-symbol type="drawable" name="ic_navigation_ring_vibrate" />
 
   <java-symbol type="bool" name="config_hasHardwareKeys" />
+=======
+>>>>>>> parent of ef44d82... SystemUi: Navigation bar Quick launch shortcuts (2 of 2)
 </resources>
