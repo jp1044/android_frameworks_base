@@ -2964,11 +2964,10 @@ public class PhoneStatusBar extends BaseStatusBar {
         public void onChange(boolean selfChange, Uri uri) {
             setNotificationWallpaperHelper();
             setNotificationAlphaHelper();
-			if (mSettingsContainer != null) {
-				mSettingsContainer.requestLayout();
+		if (mSettingsContainer != null) {
+		mSettingsContainer.requestLayout();
                 mQS.setupQuickSettings();
-                mSettingsContainer.removeAllViews();
-			    setNotificationWallpaperHelper();
+                setNotificationWallpaperHelper();
             }
         }
 
