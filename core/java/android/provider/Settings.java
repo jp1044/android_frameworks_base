@@ -3206,9 +3206,6 @@ public final class Settings {
           */
          public static final String KEY_ASSIST_ACTION = "key_assist_action";
 
-<<<<<<< HEAD
-          
-=======
          /**
           * Swap volume buttons when the screen is rotated
           * 0 - Disabled
@@ -3218,7 +3215,6 @@ public final class Settings {
           */
          public static final String SWAP_VOLUME_KEYS_ON_ROTATION = "swap_volume_keys_on_rotation";
 
->>>>>>> 2c68448... Swap volume buttons when the screen is rotated (1/2)
         /**
          * Weather to minimize lockscreen challenge on screen turned on
          * @hide
