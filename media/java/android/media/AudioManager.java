@@ -496,23 +496,22 @@ public class AudioManager {
                             stream,
                             flags);
                 }
-<<<<<<< HEAD
-=======
 
-								boolean flip = false;
-								if(Settings.System.getInt(mContext.getContentResolver(),
-													Settings.System.VOLUME_FOLLOW_ROTATION, 0) == 1){
-										int orientation = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();										
-										/* works fine for device with volume on left side. Is there any way to retrieve key position ? */
-										flip = orientation == Surface.ROTATION_90 || orientation == Surface.ROTATION_180;
-								}
-                adjustSuggestedStreamVolume(
-																						keyCode == (flip?KeyEvent.KEYCODE_VOLUME_DOWN:KeyEvent.KEYCODE_VOLUME_UP)
-																						? ADJUST_RAISE
-																						: ADJUST_LOWER,
-																						stream,
-																						flags);
->>>>>>> ef6b7d5... Added option to flip meaning of volume UP/DOWN when device is rotated.
+
+	boolean flip = false;
+	if(Settings.System.getInt(mContext.getContentResolver(),
+	Settings.System.VOLUME_FOLLOW_ROTATION, 0) == 1){
+	int orientation = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();										
+	/* works fine for device with volume on left side. Is there any way to retrieve key position ? */
+	flip = orientation == Surface.ROTATION_90 || orientation == Surface.ROTATION_180;
+      }
+      adjustSuggestedStreamVolume(
+				keyCode == (flip?KeyEvent.KEYCODE_VOLUME_DOWN:KeyEvent.KEYCODE_VOLUME_UP)
+				? ADJUST_RAISE
+				: ADJUST_LOWER,
+				stream,
+				flags);
+
                 break;
             case KeyEvent.KEYCODE_VOLUME_MUTE:
                 if (event.getRepeatCount() == 0) {
