@@ -779,12 +779,12 @@ public class NavigationBarView extends LinearLayout {
             mCurrentView = mRotatedViews[rot];
         }
         mCurrentView.setVisibility(View.VISIBLE);
-        if (!mIs600dp) {
-            rot = mDisplay.getRotation();
-            mVertical = (rot == Surface.ROTATION_90 || rot == Surface.ROTATION_270);
-        } else {
-            mVertical = getWidth() > 0 && getHeight() > getWidth();
-        }
+        //if (!mIs600dp) {
+        //    rot = mDisplay.getRotation();
+        //    mVertical = (rot == Surface.ROTATION_90 || rot == Surface.ROTATION_270);
+        //} else {
+        //    mVertical = getWidth() > 0 && getHeight() > getWidth();
+        //}
         
 
         // force the low profile & disabled states into compliance

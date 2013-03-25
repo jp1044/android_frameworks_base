@@ -2600,9 +2600,9 @@ public class PhoneStatusBar extends BaseStatusBar {
                 updateExpandedViewPos(EXPANDED_LEAVE_ALONE);
                 if (mNavigationBarView != null && mNavigationBarView.mDelegateHelper != null) {
                     // if We are in Landscape/Phone Mode then swap the XY coordinates for NaVRing Swipe
-                    mNavigationBarView.mDelegateHelper.setSwapXY((
-                            mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) 
-                            && (mCurrentUIMode == 0));
+                    //mNavigationBarView.mDelegateHelper.setSwapXY((
+                    //        mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) 
+                    //        && (mCurrentUIMode == 0));
                 }
             }
             else if (Intent.ACTION_SCREEN_ON.equals(action)) {
@@ -2987,11 +2987,6 @@ public class PhoneStatusBar extends BaseStatusBar {
               if (large != null && large.getBackground()!=null) large.getBackground().setAlpha((int) ((1-notifAlpha) * 255));
             }
         }
-        protected void updateSettings() {
-            ContentResolver cr = mContext.getContentResolver();
 
-            mCurrentUIMode = Settings.System.getInt(cr,
-                    Settings.System.CURRENT_UI_MODE, 0);
-        }
     }
 }
