@@ -653,14 +653,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     Settings.Secure.DEFAULT_INPUT_METHOD), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_SHOW), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_HEIGHT), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_HEIGHT_LANDSCAPE), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_WIDTH), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     "fancy_rotation_anim"), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
@@ -1357,12 +1349,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             */
             if (mNavBarFirstBootFlag) {
                 mNavBarFirstBootFlag = false;
-             } else {
-                 mHasNavigationBar = mHasNavigationBar &&
-                         Settings.System.getBoolean(mContext.getContentResolver(),
-                                 Settings.System.NAVIGATION_BAR_SHOW_NOW, mHasNavigationBar);
-
-            }
+             
         } else {
             // Allow a system property to override this. Used by the emulator.
             // See also hasNavigationBar().
@@ -1592,26 +1579,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         if (updateRotation) {
             updateRotation(true);
         }
-        boolean showByDefault = mContext.getResources().getBoolean(
-                com.android.internal.R.bool.config_showNavigationBar);
-        showByDefault = showByDefault || Settings.System.getBoolean(resolver,
-                        Settings.System.NAVIGATION_BAR_SHOW, showByDefault);
-        boolean showNavBarNow = Settings.System.getBoolean(resolver,
-                Settings.System.NAVIGATION_BAR_SHOW_NOW, showByDefault);
-        int NavHeight = Settings.System.getInt(resolver,
-                Settings.System.NAVIGATION_BAR_HEIGHT, 0);
-        int NavHeightLand = Settings.System.getInt(resolver,
-                Settings.System.NAVIGATION_BAR_HEIGHT_LANDSCAPE, 0);
-        int NavWidth = Settings.System.getInt(resolver,
-                Settings.System.NAVIGATION_BAR_WIDTH, 0);
-        if (NavHeight != mUserNavBarHeight || NavHeightLand != mUserNavBarHeightLand || NavWidth != mUserNavBarWidth) {
-            mUserNavBarHeight = NavHeight;
-            mUserNavBarHeightLand = NavHeightLand;
-            mUserNavBarWidth = NavWidth;
-            if(mDisplay != null)
-                setInitialDisplaySize(mDisplay, mUnrestrictedScreenWidth, mUnrestrictedScreenHeight, density);
-        }
-        
+                
     }
     
     public void getDimensions(){

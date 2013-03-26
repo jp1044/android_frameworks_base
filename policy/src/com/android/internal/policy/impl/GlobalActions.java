@@ -250,10 +250,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         };
         onExpandDesktopModeChanged();
 
-        mEnableNavBarHideToggle= Settings.System.getBoolean(mContext.getContentResolver(),
-                Settings.System.POWER_DIALOG_SHOW_NAVBAR_HIDE, false);
-        mNavBarHideToggle = new NavBarAction(mHandler);
-
         mAirplaneModeOn = new ToggleAction(
                 R.drawable.ic_lock_airplane_mode,
                 R.drawable.ic_lock_airplane_mode_off,
@@ -1145,9 +1141,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         public View create(Context context, View convertView, ViewGroup parent,
                 LayoutInflater inflater) {
             mContext = context;
-            mNavbarVisible = Settings.System.getBoolean(mContext.getContentResolver(),
-                    Settings.System.NAVIGATION_BAR_SHOW_NOW, false);
-
+           
             View v = inflater.inflate(R.layout.global_actions_navbar_mode, parent, false);
 
             for (int i = 0; i < 4; i++) {
@@ -1192,8 +1186,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             case 0 :
                 mNavbarVisible = !mNavbarVisible;
                 Settings.System.putBoolean(mContext.getContentResolver(),
-                        Settings.System.NAVIGATION_BAR_SHOW_NOW,
-                         mNavbarVisible );
                 v.setSelected(mNavbarVisible);
                 mHandler.sendEmptyMessage(MESSAGE_DISMISS);
                 break;
