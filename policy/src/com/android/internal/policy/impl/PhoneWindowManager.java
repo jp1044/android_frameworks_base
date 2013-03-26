@@ -1349,7 +1349,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             */
             if (mNavBarFirstBootFlag) {
                 mNavBarFirstBootFlag = false;
-             
+            } 
         } else {
             // Allow a system property to override this. Used by the emulator.
             // See also hasNavigationBar().
