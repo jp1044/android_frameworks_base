@@ -3341,6 +3341,13 @@ public final class Settings {
         public static final String NOTIF_ALPHA = "notif_alpha";
 
         /**
+         * User configurable flag for determining if NavBar is enabled
+         *
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_SHOW = "navigation_bar_show";
+
+        /**
          * Current UI Mode
          * 
          *  0 = Phone UI
@@ -3349,8 +3356,8 @@ public final class Settings {
          *  @hide
          */
         public static final String CURRENT_UI_MODE = "current_ui_mode";
-
-        /**
+ 
+         /**
          * User selected UI Mode
          * 
          *  0 = Phone UI
@@ -3359,41 +3366,6 @@ public final class Settings {
          *  @hide
          */
         public static final String USER_UI_MODE = "user_ui_mode";
-
-        /**
-         * User configurable flag for determining if NavBar is enabled
-         *
-         * @hide
-         */
-        public static final String NAVIGATION_BAR_SHOW = "navigation_bar_show";
-
-
-        /**
-         * Used as a flag to determine if we are showing the NavBar *NOW* or is it hidden
-         * @hide
-         */
-        public static final String NAVIGATION_BAR_SHOW_NOW = "navigation_bar_show_now";
-
-		/**
-         * Show the NavBar dialog in Power menu
-         * @hide
-         */
-        public static final String POWER_DIALOG_SHOW_NAVBAR_HIDE = "power_dialog_show_navbar_hide";
-
-        /**
-         * @hide
-         */
-        public static final String NAVIGATION_BAR_HEIGHT = "navigation_bar_height";
-
-        /**
-         * @hide
-         */
-        public static final String NAVIGATION_BAR_HEIGHT_LANDSCAPE = "navigation_bar_height_landscape";
-
-        /**
-         * @hide
-         */
-        public static final String NAVIGATION_BAR_WIDTH = "navigation_bar_width";
 
         /**
          * @hide
