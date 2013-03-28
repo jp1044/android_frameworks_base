@@ -1166,7 +1166,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 final Intent intent = new Intent(Intent.ACTION_MAIN); 
                 intent.addCategory(Intent.CATEGORY_HOME); 
                 final ResolveInfo res = mPm.resolveActivity(intent, 0);
-
                 // Launcher is running task #1
                 List<ActivityManager.RunningTaskInfo> runningTasks = am.getRunningTasks(1);
                 if (runningTasks != null) {
@@ -3049,11 +3048,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             // For purposes of positioning and showing the nav bar, if we have
             // decided that it can't be hidden (because of the screen aspect ratio),
             // then take that into account.
-            if (expandedDesktopHidesNavigationBar()) {
-                navVisible = false;
-            } else if (!mCanHideNavigationBar) {
-                navVisible = true;
-            }
+            navVisible |= !mCanHideNavigationBar;
+            navVisible &= (Settings.System.getInt(mContext.getContentResolver(), Settings.System.EXPANDED_DESKTOP_STATE, 0) == 0);
 
             if (mNavigationBar != null) {
                 // Force the navigation bar to its appropriate place and
