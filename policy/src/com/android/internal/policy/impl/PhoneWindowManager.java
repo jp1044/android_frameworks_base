@@ -310,11 +310,15 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     int mStatusBarHeight;
     WindowState mNavigationBar = null;
     boolean mHasNavigationBar = false;
+    private boolean mNavBarFirstBootFlag = true;
     boolean mCanHideNavigationBar = false;
     boolean mNavigationBarCanMove = false; // can the navigation bar ever move to the side?
     boolean mNavigationBarOnBottom = true; // is the navigation bar on the bottom *right now*?
     int[] mNavigationBarHeightForRotation = new int[4];
     int[] mNavigationBarWidthForRotation = new int[4];
+    int mUserNavBarHeight;
+    int mUserNavBarHeightLand;
+    int mUserNavBarWidth;
 
     WindowState mKeyguard = null;
     KeyguardViewMediator mKeyguardMediator;
@@ -1363,6 +1367,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     }
 
     public void updateSettings() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int density = metrics.densityDpi;
         ContentResolver resolver = mContext.getContentResolver();
         boolean updateRotation = false, updateDisplayMetrics = false;
         synchronized (mLock) {
@@ -1510,6 +1518,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         } else if (updateDisplayMetrics) {
             updateDisplayMetrics();
         }
+                
     }
     
     public void getDimensions(){
@@ -1962,6 +1971,36 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             return getNonDecorDisplayHeight(fullWidth, fullHeight, rotation) - mStatusBarHeight;
         }
         return getNonDecorDisplayHeight(fullWidth, fullHeight, rotation);
+    }
+
+    @Override
+    public int getWallpaperHeight(int rotation) {
+        return getWallpaperTop(rotation)+getWallpaperBottom(rotation);
+    }
+
+    @Override
+    public int getWallpaperWidth(int rotation) {
+        return getWallpaperLeft(rotation)+getWallpaperRight(rotation);
+    }
+
+    @Override
+    public int getWallpaperTop(int rotation) {
+        return mUnrestrictedScreenTop;
+    }
+
+    @Override
+    public int getWallpaperLeft(int rotation) {
+        return mUnrestrictedScreenLeft;
+    }
+
+    @Override
+    public int getWallpaperBottom(int rotation) {
+        return mUnrestrictedScreenTop+mUnrestrictedScreenHeight;
+    }
+
+    @Override
+    public int getWallpaperRight(int rotation) {
+        return mUnrestrictedScreenLeft+mUnrestrictedScreenWidth;
     }
 
     @Override
@@ -3029,8 +3068,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mStableBottom = mStableFullscreenBottom = mTmpNavigationFrame.top;
                     if (navVisible) {
                         mNavigationBar.showLw(true);
-                        mDockBottom = mTmpNavigationFrame.top;
-                        mRestrictedScreenHeight = mDockBottom - mDockTop;
+                        mSystemBottom = mDockBottom = mTmpNavigationFrame.bottom - mDockTop;
                     } else {
                         // We currently want to hide the navigation UI.
                         mNavigationBar.hideLw(true);
@@ -3039,7 +3077,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                         // If the nav bar is currently requested to be visible,
                         // and not in the process of animating on or off, then
                         // we can tell the app that it is covered by it.
-                        mSystemBottom = mTmpNavigationFrame.top;
+                        mSystemBottom = displayHeight;
+                        mRestrictedScreenHeight = mTmpNavigationFrame.top - mDockTop;
                     }
                 } else {
                     // Landscape screen; nav bar goes to the right.
@@ -3048,8 +3087,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mStableRight = mStableFullscreenRight = mTmpNavigationFrame.left;
                     if (navVisible) {
                         mNavigationBar.showLw(true);
-                        mDockRight = mTmpNavigationFrame.left;
-                        mRestrictedScreenWidth = mDockRight - mDockLeft;
+                        mSystemRight = mDockRight = mTmpNavigationFrame.left - mDockLeft;
                     } else {
                         // We currently want to hide the navigation UI.
                         mNavigationBar.hideLw(true);
@@ -3058,7 +3096,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                         // If the nav bar is currently requested to be visible,
                         // and not in the process of animating on or off, then
                         // we can tell the app that it is covered by it.
-                        mSystemRight = mTmpNavigationFrame.left;
+                        mSystemRight = displayWidth;
+                        mRestrictedScreenWidth = mTmpNavigationFrame.left - mDockLeft;
                     }
                 }
                 // Make sure the content and current rectangles are updated to
@@ -3088,6 +3127,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 vf.right = mStableRight;
                 vf.bottom = mStableBottom;
 
+                if(navVisible && !mNavigationBarOnBottom) {
+                    pf.right = df.right = vf.right = mTmpNavigationFrame.left;
+                }
+
                 mStatusBarLayer = mStatusBar.getSurfaceLayer();
 
                 // Let the status bar determine its size.
@@ -3106,7 +3149,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     // Status bar may go away, so the screen area it occupies
                     // is available to apps but just covering them when the
                     // status bar is visible.
-                    mDockTop = mUnrestrictedScreenTop + mStatusBarHeight;
+                    mDockTop = mUnrestrictedScreenTop+mStatusBarHeight;
 
                     mContentTop = mCurTop = mDockTop;
                     mContentBottom = mCurBottom = mDockBottom;
@@ -3124,9 +3167,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     // If the status bar is currently requested to be visible,
                     // and not in the process of animating on or off, then
                     // we can tell the app that it is covered by it.
-                    mSystemTop = mUnrestrictedScreenTop + mStatusBarHeight;
+                    mSystemTop = mUnrestrictedScreenTop;
                 }
             }
+            mDockBottom = navVisible ? mRestrictedScreenTop + mRestrictedScreenHeight : mDockBottom;
+            mDockRight = navVisible ? mRestrictedScreenLeft + mRestrictedScreenWidth: mDockRight;
         }
     }
 
@@ -3236,9 +3281,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
         final boolean hasNavBar = (isDefaultDisplay && mHasNavigationBar
                 && mNavigationBar != null && mNavigationBar.isVisibleLw());
-
         final int adjust = sim & SOFT_INPUT_MASK_ADJUST;
-
         if (!isDefaultDisplay) {
             if (attached != null) {
                 // If this window is attached to another, our display
@@ -3261,6 +3304,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             // IM dock windows always go to the bottom of the screen.
             attrs.gravity = Gravity.BOTTOM;
             mDockLayer = win.getSurfaceLayer();
+        } else if (attrs.type == TYPE_WALLPAPER) {
+            pf.left = df.left = cf.left = vf.left = getWallpaperLeft(mUserRotation);
+            pf.top = df.top = cf.top = vf.top = getWallpaperTop(mUserRotation);
+            pf.right = df.right = cf.right = vf.right = getWallpaperRight(mUserRotation);
+            pf.bottom = df.bottom = cf.bottom = vf.bottom = getWallpaperBottom(mUserRotation);
         } else {
             if ((fl & (FLAG_LAYOUT_IN_SCREEN | FLAG_FULLSCREEN | FLAG_LAYOUT_INSET_DECOR))
                     == (FLAG_LAYOUT_IN_SCREEN | FLAG_LAYOUT_INSET_DECOR)
@@ -3455,16 +3503,16 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                         df.right = cf.right = mDockRight;
                         df.bottom = cf.bottom = mDockBottom;
                     } else {
-                        df.left = cf.left = mContentLeft;
-                        df.top = cf.top = mContentTop;
-                        df.right = cf.right = mContentRight;
-                        df.bottom = cf.bottom = mContentBottom;
+                        df.left = cf.left = mRestrictedScreenLeft;
+                        df.top = cf.top = mRestrictedScreenTop;
+                        df.right = cf.right = mRestrictedScreenLeft+mRestrictedScreenWidth;
+                        df.bottom = cf.bottom = mRestrictedScreenTop+mRestrictedScreenHeight;
                     }
                     if (adjust != SOFT_INPUT_ADJUST_NOTHING) {
-                        vf.left = mCurLeft;
-                        vf.top = mCurTop;
-                        vf.right = mCurRight;
-                        vf.bottom = mCurBottom;
+                        vf.left = mRestrictedScreenLeft;
+                        vf.top =  mRestrictedScreenTop;
+                        vf.right = mRestrictedScreenLeft+mRestrictedScreenWidth;
+                        vf.bottom = mRestrictedScreenTop+mRestrictedScreenHeight;;
                     } else {
                         vf.set(cf);
                     }

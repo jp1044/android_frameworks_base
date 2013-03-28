@@ -568,16 +568,30 @@
         <xliff:g id="number">%d</xliff:g>
     </string>
 
-    <!-- Dialog title for navigation bar button selection -->
-    <string name="navbar_dialog_title">Choose action to assign</string>
-    <string name="navbar_home_button">Home button</string>
-    <string name="navbar_recent_button">Recent button</string>
-    <string name="navbar_search_button">Search button</string>
-    <string name="navbar_back_button">Back button</string>
-    <string name="navbar_empty_button">Empty button</string>
-    <string name="navbar_menu_conditional_button">Menu (autoHide) button</string>
-    <string name="navbar_menu_always_button">Menu (alwaysShow) button</string>
-    <string name="navbar_menu_big_button">Menu button</string>
+    <!--  AOKP Strings can go here... -->
+
+    <!--  Target/Action Strings -->
+    <string name="shortcut_label">AOKP Actions</string>
+    <string name="action_home">Home</string>
+    <string name="action_back">Back</string>
+    <string name="action_recents">Recents</string>
+    <string name="action_screenshot">Screenshot</string>
+    <string name="action_menu">Menu</string>
+    <string name="action_ime">Open IME Switcher</string>
+    <string name="action_kill">Kill task</string>
+    <string name="action_power">Power</string>
+    <string name="action_search">Search</string>
+    <string name="action_notifications">Notifications</string>
+    <string name="action_lastapp">Last App</string>
+    <string name="action_none">Empty</string>
+
+    <string name="widgets">Widgets</string>
+    <string name="toggle_navbar">NavBar - Toggle</string>
+    <string name="toggle_widgets">Widgets - Toggle</string>
+    <string name="toggle_ring_vib">Ring/Vib - Toggle</string>
+    <string name="toggle_ring_silent">Ring/Silent - Togle</string>
+    <string name="toggle_ring_vib_silent">Ring/Vib/Silent - Toggle</string>
+    <string name="app_killed_message">App Killed</string>
 
     <!-- Battery status in pie controls -->
     <string name="pie_battery_status_charging">Charging (<xliff:g id="percent">%d</xliff:g>%%)</string>

@@ -1898,6 +1898,7 @@
   <!-- Lock screen always show battery -->
   <java-symbol type="string" name="lockscreen_discharging" />
 
+
   <!-- HW rotation lock -->
   <java-symbol type="string" name="toast_rotation_unlocked" />
   <java-symbol type="string" name="toast_rotation_locked" />
@@ -1914,23 +1915,16 @@
   <!-- Reboot confirmation string -->
   <java-symbol type="string" name="reboot_confirm" />
 
-  <!-- Navigation Ring -->
-  <java-symbol type="drawable" name="ic_navigation_ring_blank_normal" />
-  <java-symbol type="drawable" name="ic_navigation_ring_blank_activated" />
-  <java-symbol type="drawable" name="ic_navigation_ring_empty" />
-  <java-symbol type="drawable" name="ic_navigation_ring_ime_switcher" />
-  <java-symbol type="drawable" name="ic_navigation_ring_killtask" />
-  <java-symbol type="drawable" name="ic_navigation_ring_power" />
-  <java-symbol type="drawable" name="ic_navigation_ring_screenshot" />
-  <java-symbol type="drawable" name="ic_navigation_ring_silent" />
-  <java-symbol type="drawable" name="ic_navigation_ring_sound_on" />
-  <java-symbol type="drawable" name="ic_navigation_ring_torch_on" />
-  <java-symbol type="drawable" name="ic_navigation_ring_torch_off" />
-  <java-symbol type="drawable" name="ic_navigation_ring_vibrate" />
 
   <java-symbol type="bool" name="config_hasHardwareKeys" />
 
   <!-- IME Picker showing upon pressing Sym Key -->
   <java-symbol type="bool" name="config_symKeyShowsImePicker" />
+
+  <!-- Hide Navbar -->
+  <java-symbol type="layout" name="global_actions_navbar_mode" />
+  <java-symbol type="id" name="navbarhome" />
+  <java-symbol type="id" name="navbarback" />
+  <java-symbol type="id" name="navbarmenu" />
 
 </resources>

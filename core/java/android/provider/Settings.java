@@ -2947,6 +2947,7 @@ public final class Settings {
          */
         public static final String VOLUME_LINK_NOTIFICATION = "volume_link_notification";
 
+       
         /**
          * Whether to unlock the menu key.  The value is boolean (1 or 0).
          * @hide
@@ -3373,6 +3374,132 @@ public final class Settings {
         public static final String NOTIF_ALPHA = "notif_alpha";
 
         /**
+         * @hide
+         */
+        public static final String MENU_LOCATION = "menu_location";
+
+        /**
+         * @hide
+         */
+        public static final String MENU_VISIBILITY = "menu_visibility";
+
+        /**
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_BUTTONS_QTY = "navigation_bar_buttons_qty";
+
+        /**
+         * @hide
+         */
+        public static final String[] NAVIGATION_CUSTOM_ACTIVITIES = new String[] {
+            "navigation_custom_app_intent_0",
+            "navigation_custom_app_intent_1",
+            "navigation_custom_app_intent_2",
+            "navigation_custom_app_intent_3",
+            "navigation_custom_app_intent_4",
+            "navigation_custom_app_intent_5",
+            "navigation_custom_app_intent_6",
+        };
+
+        /**
+         * @hide
+         */
+        public static final String[] NAVIGATION_LONGPRESS_ACTIVITIES = new String[] {
+            "navigation_longpress_app_intent_0",
+            "navigation_longpress_app_intent_1",
+            "navigation_longpress_app_intent_2",
+            "navigation_longpress_app_intent_3",
+            "navigation_longpress_app_intent_4",
+            "navigation_longpress_app_intent_5",
+            "navigation_longpress_app_intent_6",
+        };
+
+        /**
+         * @hide
+         */
+        public static final String[] NAVIGATION_CUSTOM_APP_ICONS = new String[] {
+            "navigation_custom_app_icon_0",
+            "navigation_custom_app_icon_1",
+            "navigation_custom_app_icon_2",
+            "navigation_custom_app_icon_3",
+            "navigation_custom_app_icon_4",
+            "navigation_custom_app_icon_5",
+            "navigation_custom_app_icon_6",
+        };
+
+        /**
+         * Widgets to show, should be separated by |
+         */
+        public static final String NAVIGATION_BAR_WIDGETS = "navigation_bar_widgets";
+
+        /**
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_BUTTON_ALPHA = "navigation_bar_button_alpha";
+
+        /**
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_TINT = "navigation_bar_tint";
+
+        /**
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_GLOW_TINT = "navigation_bar_glow_tint";
+
+        /**
+         * @hide
+         */
+        public static final String[] NAVIGATION_BAR_GLOW_DURATION = new String[] {
+            "navigation_bar_glow_duration_off",
+            "navigation_bar_glow_duration_on",
+        };
+
+       /**
+        * Lefty mode
+        * @hide
+        */
+        public static final String NAVIGATION_BAR_LEFTY_MODE = "navigation_bar_lefty_mode";
+
+       /**
+        *
+        * @hide
+        */
+        public static final String SYSTEMUI_NAVRING_AMOUNT = "systemui_navring_amount";
+
+       /**
+        *
+        * @hide
+        */
+        public static final String SYSTEMUI_NAVRING_LONG_ENABLE = "systemui_navring_long_enable";
+
+        /**
+         * Custom navring actions
+         *
+         * @hide
+         */
+        public static final String[] SYSTEMUI_NAVRING = new String[] {
+                "navring_0",
+                "navring_1",
+                "navring_2",
+                "navring_3",
+                "navring_4",
+        };
+
+        /**
+         * Custom navring long press actions
+         *
+         * @hide
+         */
+        public static final String[] SYSTEMUI_NAVRING_LONG = new String[] {
+                "navring_long_0",
+                "navring_long_1",
+                "navring_long_2",
+                "navring_long_3",
+                "navring_long_4",
+        };
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -3691,6 +3818,21 @@ public final class Settings {
         @Deprecated
         public static final String WIFI_WATCHDOG_PING_TIMEOUT_MS =
             Secure.WIFI_WATCHDOG_PING_TIMEOUT_MS;
+
+        /**
+         * boolean value. toggles using arrow key locations on nav bar
+         * as left and right dpad keys
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_MENU_ARROW_KEYS = "navigation_bar_menu_arrow_keys";
+
+        /**
+         * Navigation bar alpha while in homescreen and lockscreen.
+         *
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_ALPHA = "navigation_bar_alpha";
+
     }
 
     /**

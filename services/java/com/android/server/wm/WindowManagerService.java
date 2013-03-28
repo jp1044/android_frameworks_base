@@ -1620,9 +1620,8 @@ public class WindowManagerService extends IWindowManager.Stub
         boolean targetChanged = false;
 
         // TODO(multidisplay): Wallpapers on main screen only.
-        final DisplayInfo displayInfo = getDefaultDisplayContentLocked().getDisplayInfo();
-        final int dw = displayInfo.appWidth;
-        final int dh = displayInfo.appHeight;
+        final int dw = mPolicy.getWallpaperWidth(mRotation);
+        final int dh = mPolicy.getWallpaperHeight(mRotation);
 
         // First find top-most window that has asked to be on top of the
         // wallpaper; all wallpapers go behind it.
@@ -1879,7 +1878,6 @@ public class WindowManagerService extends IWindowManager.Stub
             while (curWallpaperIndex > 0) {
                 curWallpaperIndex--;
                 WindowState wallpaper = token.windows.get(curWallpaperIndex);
-
                 if (visible) {
                     updateWallpaperOffsetLocked(wallpaper, dw, dh, false);
                 }
@@ -2043,10 +2041,8 @@ public class WindowManagerService extends IWindowManager.Stub
     }
 
     void updateWallpaperOffsetLocked(WindowState changingTarget, boolean sync) {
-        final DisplayContent displayContent = changingTarget.mDisplayContent;
-        final DisplayInfo displayInfo = displayContent.getDisplayInfo();
-        final int dw = displayInfo.appWidth;
-        final int dh = displayInfo.appHeight;
+        final int dw = mPolicy.getWallpaperWidth(mRotation);
+        final int dh = mPolicy.getWallpaperHeight(mRotation);
 
         WindowState target = mWallpaperTarget;
         if (target != null) {

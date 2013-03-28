@@ -257,6 +257,23 @@ public class ExtendedPropertiesUtils {
     }
 
     /**
+     * Returns whether if device is on phone UI or not
+     * 
+     * @return device is phone
+     */
+    public static boolean isPhone() {
+        int layout;
+        String prop = readProperty("com.android.systemui.layout", "0");
+        if (isParsableToInt(prop)) {
+            layout = Integer.parseInt(prop);
+        } else {
+            layout = getActualProperty(prop);
+        }
+        return layout <= 360;
+        
+    }
+
+    /**
      * Returns whether if device is on tablet UI or not
      * 
      * @return device is tablet
