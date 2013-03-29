@@ -76,7 +76,7 @@ public class PhoneStatusBarView extends PanelBar {
                 @Override
                 protected Boolean doInBackground(Void... params) {
                     final List<ActivityManager.RecentTaskInfo> recentTasks = mActivityManager.getRecentTasksForUser(
-                            1, ActivityManager.RECENT_WITH_EXCLUDED, UserHandle.CURRENT.getIdentifier());
+                            1, ActivityManager.RECENT_IGNORE_UNAVAILABLE, UserHandle.CURRENT.getIdentifier());
                     if (recentTasks != null && recentTasks.size() > 0) {
                         ActivityManager.RecentTaskInfo recentInfo = recentTasks.get(0);
                         Intent intent = new Intent(recentInfo.baseIntent);
