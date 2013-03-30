@@ -315,7 +315,9 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         mHasTelephony = pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY);
 
         final Resources res = mContext.getResources();
-        Tracker.sDistance = res.getDimensionPixelSize(R.dimen.pie_trigger_distance);
+        Tracker.sDistance = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.PIE_DISTANCE,
+                res.getDimensionPixelSize(R.dimen.pie_trigger_distance));
 
         mBackIcon = res.getDrawable(R.drawable.ic_sysbar_back);
         mBackAltIcon = res.getDrawable(R.drawable.ic_sysbar_back_ime);
