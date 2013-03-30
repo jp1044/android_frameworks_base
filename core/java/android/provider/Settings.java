@@ -3556,6 +3556,21 @@ public final class Settings {
         };
 
         /**
+         * @hide
+         */
+        public static final String PIE_COLOR = "pie_color";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_OUTLINE_COLOR = "pie_outline_color";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_SELECTED_COLOR = "pie_selected_color";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
