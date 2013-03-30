@@ -92,18 +92,17 @@
         android:id="@+id/recents_ram_bar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="bottom"
-        android:layout_gravity="bottom">
+        android:gravity="top"
+        android:layout_gravity="top">
 
         <view class="com.android.systemui.recent.LinearColorBar"
             android:id="@+id/ram_usage_bar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
             android:orientation="horizontal"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:paddingTop="30dp"
+            android:paddingTop="1dp"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:paddingBottom="1dp">

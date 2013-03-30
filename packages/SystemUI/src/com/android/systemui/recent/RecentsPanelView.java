@@ -845,9 +845,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
             wm.getDefaultDisplay().getMetrics(metrics);
             float logicalDensity = metrics.density;
 
-            int pxRamBarPadding = (int) (30 * logicalDensity + 0.5);
             if (mRecentsContainer != null)
-                mRecentsContainer.setPadding(0,0,0,pxRamBarPadding);
                 mRamUsageBar.setVisibility(View.VISIBLE);
 
                 updateMemoryInfo();
