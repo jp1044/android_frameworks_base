@@ -68,8 +68,6 @@
         android:layout_height="match_parent"
         android:visibility="invisible" />
 
-<<<<<<< HEAD
-=======
    <RelativeLayout
         android:id="@+id/recents_ram_bar"
         android:layout_width="match_parent"
@@ -126,5 +124,4 @@
         </view>
     </RelativeLayout>
 
->>>>>>> 1120f72... Framework: Recents RAM bar (1/2)
 </com.android.systemui.recent.RecentsPanelView>

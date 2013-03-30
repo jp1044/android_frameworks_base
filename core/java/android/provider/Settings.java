@@ -2901,12 +2901,12 @@ public final class Settings {
         public static final String EXPANDED_DESKTOP_STATE = "expanded_desktop_state";
 
         /**
-<<<<<<< HEAD
          * Expanded desktop style (with status bar or without status bar)
          * @hide
          */
         public static final String EXPANDED_DESKTOP_STYLE = "expanded_desktop_style";
-=======
+
+        /**
          * whether which Ram Usage Bar mode is used on recent switcher
          * 0 = none, 1 = only app use, 2 = app and cache use, 3 = app, cache and system use
          * @hide
@@ -2933,7 +2933,6 @@ public final class Settings {
          * @hide
          */
         public static final String RECENTS_RAM_BAR_ACTIVE_APPS_COLOR = "recents_ram_bar_active_apps_color";
->>>>>>> 1120f72... Framework: Recents RAM bar (1/2)
 
         /**
          * User Interface State

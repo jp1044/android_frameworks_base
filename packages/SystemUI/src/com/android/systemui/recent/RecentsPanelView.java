@@ -65,14 +65,11 @@ import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.tablet.StatusBarPanel;
 import com.android.systemui.statusbar.tablet.TabletStatusBar;
 
-<<<<<<< HEAD
-=======
 import com.android.internal.util.MemInfoReader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
->>>>>>> 1120f72... Framework: Recents RAM bar (1/2)
 import java.util.ArrayList;
 
 public class RecentsPanelView extends FrameLayout implements OnItemClickListener, RecentsCallback,
@@ -101,9 +98,9 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
     private int mRecentItemLayoutId;
     private boolean mHighEndGfx;
     private ImageView mClearRecents;
-<<<<<<< HEAD
+
     private int mAndroidDpi = DisplayMetrics.DENSITY_DEVICE;
-=======
+
     private LinearColorBar mRamUsageBar;
 
     private long mTotalUsedMemory;
@@ -116,7 +113,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
     TextView mRamText;
 
     MemInfoReader mMemInfoReader = new MemInfoReader();
->>>>>>> 1120f72... Framework: Recents RAM bar (1/2)
+
 
     public static interface RecentsScrollView {
         public int numItemsInOneScreenful();
@@ -829,8 +826,6 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
         });
         popup.show();
     }
-<<<<<<< HEAD
-=======
 
     private void updateRamBar() {
         mRamUsageBar = (LinearColorBar) findViewById(R.id.ram_usage_bar);
@@ -989,5 +984,4 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
         }
     }
 
->>>>>>> 1120f72... Framework: Recents RAM bar (1/2)
 }

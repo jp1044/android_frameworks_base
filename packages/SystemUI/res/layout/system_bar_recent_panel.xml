@@ -88,8 +88,6 @@
         android:layout_alignParentLeft="true"
     />
 
-<<<<<<< HEAD
-=======
    <RelativeLayout
         android:id="@+id/recents_ram_bar"
         android:layout_width="fill_parent"
@@ -145,6 +143,5 @@
                 android:singleLine="true" />
         </view>
     </RelativeLayout>
->>>>>>> 1120f72... Framework: Recents RAM bar (1/2)
 
 </com.android.systemui.recent.RecentsPanelView>
