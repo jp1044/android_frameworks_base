@@ -180,7 +180,7 @@ public class ExtendedPropertiesUtils {
                     break;
                 case FullNameExclude:
                     tempInfo = getAppInfoFromPath((String) input);
-                    if (tempInfo != null && !isHooked()) {
+                    if (tempInfo != null && isInitialized()) {
                         mLocalHook.info = tempInfo;
                     }
                     break;
