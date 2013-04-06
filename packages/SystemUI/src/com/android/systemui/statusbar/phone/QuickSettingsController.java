@@ -129,7 +129,7 @@ public class QuickSettingsController {
 
     private static final int MSG_UPDATE_TILES = 1000;
 
-    public QuickSettingsController(Context context, QuickSettingsContainerView container, PhoneStatusBar statusBarService) {
+    public QuickSettingsController(Context context, QuickSettingsContainerView container, BaseStatusBar statusBarService) {
         mContext = context;
         mContainerView = container;
         mHandler = new Handler() {
@@ -299,7 +299,7 @@ public class QuickSettingsController {
         }
     }
 
-    protected void setupQuickSettings() {
+    public void setupQuickSettings() {
         mQuickSettingsTiles.clear();
         mContainerView.removeAllViews();
         // Clear out old receiver
