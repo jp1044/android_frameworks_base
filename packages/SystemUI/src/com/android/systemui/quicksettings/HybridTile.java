@@ -20,7 +20,7 @@ public class HybridTile extends QuickSettingsTile {
             QuickSettingsContainerView container,
             final QuickSettingsController qsc, Handler handler) {
         super(context, inflater, container, qsc);
-
+        updateTile();
 
     	mOnClick = new View.OnClickListener() {
 	   @Override
@@ -31,6 +31,17 @@ public class HybridTile extends QuickSettingsTile {
 	   startSettingsActivity(intent);
 	   }
    	};	
+    }
+
+    void onPostCreate() {
+        updateTile();
+        super.onPostCreate();
+    }
+
+    @Override
+    public void updateResources() {
+        updateTile();
+        super.updateResources();
     }
 
     private synchronized void updateTile() {
