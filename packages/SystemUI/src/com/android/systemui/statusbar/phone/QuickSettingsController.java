@@ -242,7 +242,7 @@ public class QuickSettingsController {
             } else if (tile.equals(TILE_VOLUME)) {
                 qs = new VolumeTile(mContext, inflater, mContainerView, this, mHandler);
             } else if (tile.equals(TILE_HYBRID)) {
-                qs = new HybridTile(mContext, inflater, mContainerView, this);
+                qs = new HybridTile(mContext, inflater, mContainerView, this, mHandler);
             } else if (tile.equals(TILE_EXPANDEDDESKTOP)) {
                 mTileStatusUris.add(Settings.System.getUriFor(Settings.System.EXPANDED_DESKTOP_STYLE));
                 if (expandedDesktopEnabled(resolver)) {
