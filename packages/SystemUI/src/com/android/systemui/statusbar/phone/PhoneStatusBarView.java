@@ -35,6 +35,7 @@ import android.database.ContentObserver;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Broadcaster;
 import android.os.Handler;
@@ -49,7 +50,6 @@ import android.view.accessibility.AccessibilityEvent;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.policy.PieController.Position;
 import com.android.systemui.statusbar.BackgroundAlphaColorDrawable;
-import com.android.systemui.statusbar.NavigationBarView;
 
 public class PhoneStatusBarView extends PanelBar {
     private static final String TAG = "PhoneStatusBarView";
@@ -381,7 +381,6 @@ public class PhoneStatusBarView extends PanelBar {
                     Settings.System.getUriFor(Settings.System.STATUS_NAV_BAR_ALPHA_MODE), false, this);
             resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.STATUS_BAR_COLOR), false, this);
-            updateSettings();
         }
 
         @Override
@@ -391,7 +390,6 @@ public class PhoneStatusBarView extends PanelBar {
     }
 
     protected void updateSettings() {
-        ContentResolver resolver = mContext.getContentResolver();
         mAlpha = 1.0f - Settings.System.getFloat(mContext.getContentResolver(),
                        Settings.System.STATUS_BAR_ALPHA,
                        0.0f);
