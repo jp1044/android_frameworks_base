@@ -19,18 +19,18 @@ public class HybridTile extends QuickSettingsTile {
     public HybridTile(Context context, LayoutInflater inflater,
             QuickSettingsContainerView container,
             final QuickSettingsController qsc, Handler handler) {
-        super(context, inflater, container, qsc);
-        updateTile();
+            super(context, inflater, container, qsc);
+            updateTile();
 
-    	mOnClick = new View.OnClickListener() {
-	   @Override
-	   public void onClick(View v) {
-	      Intent intent = new Intent("android.intent.action.MAIN");
-	      intent.setClassName("com.android.settings", "com.android.settings.Settings$HybridSettingsActivity");
+         mOnClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              Intent intent = new Intent("android.intent.action.MAIN");
+              intent.setClassName("com.android.settings", "com.android.settings.Settings$HybridSettingsActivity");
 	
-	   startSettingsActivity(intent);
-	   }
-   	};	
+            startSettingsActivity(intent);
+            }
+         };	
     }
 
     void onPostCreate() {
