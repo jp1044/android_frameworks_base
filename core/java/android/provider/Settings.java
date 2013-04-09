@@ -3367,14 +3367,7 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_ALPHA = "status_bar_alpha";
-
-        /**
-         * Sets transparency mode of statusbar
-         * 0 = only home, 1 = keyguard and home (default), 2 = always
-         * @hide
-         */
-        public static final String STATUS_BAR_ALPHA_MODE = "status_bar_alpha_mode";
-
+      
         /**
          * Sets color of statusbar
          * @hide
