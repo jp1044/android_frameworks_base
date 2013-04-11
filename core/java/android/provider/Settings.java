@@ -3357,6 +3357,31 @@ public final class Settings {
         public static final String SYSTEM_POWER_CRT_MODE = "system_power_crt_mode";
 
         /**
+         * Is current activity launcher or not
+         * @hide
+         */
+        public static final String IS_HOME = "is_home";
+
+        /**
+         * Sets transparency of statusbar
+         * @hide
+         */
+        public static final String STATUS_BAR_ALPHA = "status_bar_alpha";
+      
+        /**
+         * Sets color of statusbar
+         * @hide
+         */
+        public static final String STATUS_BAR_COLOR = "status_bar_color";
+        
+        /**
+         * Sets transparency mode of status and navigation bar
+         * 0 = only home, 1 = keyguard and home (default), 2 = always
+         * @hide
+         */
+        public static final String STATUS_NAV_BAR_ALPHA_MODE = "status_nav_bar_alpha_mode";
+
+        /**
          * Custom navring actions
          *
          * @hide

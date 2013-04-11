@@ -101,10 +101,12 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
 
     boolean mIsTablet;
     boolean mIsPhone;
-
+    
+    private float mAlpha;
+    private int mAlphaMode;
     int mNavigationBarColor = -1;
+    private boolean mIsHome = true;
 
-    private float mNavigationBarAlpha;
     public static final float KEYGUARD_ALPHA = 0.44f;
 
     public String[] mClickActions = new String[7];
@@ -341,7 +343,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                     mNavigationBarColor > 0 ? mNavigationBarColor : ((ColorDrawable) bg).getColor());
             setBackground(bacd);
         }
-        setBackgroundAlpha(mNavigationBarAlpha);
+        updateKeyguardAlpha();
     }
 
     private void addLightsOutButton(LinearLayout root, View v, boolean landscape, boolean empty) {
@@ -526,12 +528,14 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     }
 
     private void updateKeyguardAlpha() {
-        if((mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) != 0) {
+        if((mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) != 0
+                || (isKeyguardEnabled() && mAlphaMode == 0)
+                || (!isKeyguardEnabled() && mIsHome == false && mAlphaMode != 2)) {
             // keyboard up, always darken it
             setBackgroundAlpha(1);
         } else {
             // if the user set alpha is below what the keygaurd alpha, match the keyguard alpha and be pretty
-            setBackgroundAlpha(isKeyguardEnabled() && mNavigationBarAlpha < KEYGUARD_ALPHA ? KEYGUARD_ALPHA : mNavigationBarAlpha);
+            setBackgroundAlpha(mAlpha);
         }
     }
 
@@ -771,6 +775,10 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
          }
          mCurrentView = mRotatedViews[Surface.ROTATION_0];
 
+         // this takes care of activity broadcasts for alpha mode
+         BroadcastObserver broadcastObserver = new BroadcastObserver(new Handler());
+         broadcastObserver.observe();
+
          // this takes care of making the buttons
          SettingsObserver settingsObserver = new SettingsObserver(new Handler());
          settingsObserver.observe();
@@ -943,6 +951,9 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
             resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_ALPHA), false, this);
             resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.STATUS_NAV_BAR_ALPHA_MODE), false,
+                    this);
+            resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_COLOR), false, this);
             resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.MENU_LOCATION), false,
@@ -1003,15 +1014,38 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
         bg.setAlpha(a);
     }
 
+    class BroadcastObserver extends ContentObserver {
+        BroadcastObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.IS_HOME), false,
+                    this);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            mIsHome = Settings.System.getInt(getContext().getContentResolver(),
+                   Settings.System.IS_HOME, 1) == 1;
+            updateKeyguardAlpha();
+        }
+    }
+
     protected void updateSettings() {
         ContentResolver resolver = mContext.getContentResolver();
 
         mMenuLocation = Settings.System.getInt(resolver,
                 Settings.System.MENU_LOCATION, SHOW_RIGHT_MENU);
-        mNavigationBarAlpha = Settings.System.getFloat(resolver,
+        mAlpha = Settings.System.getFloat(resolver,
                 Settings.System.NAVIGATION_BAR_ALPHA,
                 new Float(mContext.getResources().getInteger(
                         R.integer.navigation_bar_transparency) / 255));
+        mAlphaMode = Settings.System.getInt(resolver,
+                Settings.System.STATUS_NAV_BAR_ALPHA_MODE, 1);
         mNavigationBarColor = Settings.System.getInt(resolver,
                 Settings.System.NAVIGATION_BAR_COLOR, -1);
         mMenuVisbility = Settings.System.getInt(resolver,
