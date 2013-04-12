@@ -1546,63 +1546,11 @@ public abstract class BaseStatusBar extends SystemUI implements
         void observe(Context context) {
             ContentResolver resolver = context.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.TABLET_MODE), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.TABLET_FLIPPED), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.TABLET_SCALED_ICONS), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.TABLET_FORCE_MENU), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.LARGE_RECENT_THUMBS), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_ALIGNMENT), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_CLOCK_COLOR), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_COLOR), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_COLOR), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NOTIFICATION_PANEL_COLOR), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.RECENTS_PANEL_COLOR), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.SETTINGS_TILE_COLOR), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.EXPANDED_DESKTOP_STATE), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.PIE_COLOR), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.PIE_SELECTED_COLOR), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.PIE_OUTLINE_COLOR), false, this);
-        }
-
-        @Override
-        public void onChange(boolean selfChange, Uri uri) {
-            if (uri.equals(Settings.System.getUriFor(Settings.System.EXPANDED_DESKTOP_STATE))) {
-                mHandler.removeMessages(MSG_HIDE_STATUSBAR);
-                mHandler.sendEmptyMessage(MSG_HIDE_STATUSBAR);
-            } else {
-                android.os.Process.killProcess(android.os.Process.myPid());
-            }
-        }
-    };
-
-    public final Runnable mStatusBarTimeout = new Runnable() {
-        public void run() {
-            Settings.System.putInt(mContext.getContentResolver(),
-                    Settings.System.EXPANDED_DESKTOP_STATE, 1);
-        }
-    };
-
-    public View.OnTouchListener mHideBarListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            mHandler.removeMessages(MSG_HIDE_STATUSBAR);
-            mHandler.sendEmptyMessage(MSG_HIDE_STATUSBAR);
-            return false;
         }
     };
 }
