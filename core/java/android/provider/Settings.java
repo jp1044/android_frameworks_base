@@ -3573,6 +3573,11 @@ public final class Settings {
         /**
          * @hide
          */
+        public static final String PIE_LONG_PRESS_COLOR = "pie_long_press_color";
+
+        /**
+         * @hide
+         */
         public static final String PIE_START = "pie_start";
 
         /**
