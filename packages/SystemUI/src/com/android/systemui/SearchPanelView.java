@@ -60,6 +60,7 @@ import android.os.UserHandle;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.AttributeSet;
+import android.util.ExtendedPropertiesUtils;
 import android.util.Slog;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
@@ -257,21 +258,33 @@ public class SearchPanelView extends FrameLayout implements
         int endPosOffset;
         int middleBlanks = 0;
 
-         if (screenLayout() == Configuration.SCREENLAYOUT_SIZE_LARGE || isScreenPortrait()) {
-             startPosOffset =  1;
-             endPosOffset =  (mNavRingAmount) + 1;
-         } else {
-            // next is landscape for lefty navbar is on left
-                if (mLefty) {
-                    startPosOffset =  1 - (mNavRingAmount % 2);
-                    middleBlanks = mNavRingAmount + 2;
-                    endPosOffset = 0;
-
-                } else {
-                //lastly the standard landscape with navbar on right
-                    startPosOffset =  (Math.min(1,mNavRingAmount / 2)) + 2;
-                    endPosOffset =  startPosOffset - 1;
-                }
+        int uiMode = ExtendedPropertiesUtils.getActualProperty("com.android.systemui.layout");
+        if (uiMode >= 1000) {
+            // Tablet Mode
+            if (mLefty) { // either lefty or... (Ring is actually on right side of screen)
+                startPosOffset =  (mNavRingAmount) + 1;
+                endPosOffset =  (mNavRingAmount * 2) + 1;
+            } else { // righty... (Ring actually on left side of tablet)
+                startPosOffset =  1;
+                endPosOffset = (mNavRingAmount * 3) + 1;
+            }
+        } else if (uiMode >= 600) {
+            // Phablet Mode - Search Ring stays at bottom
+            startPosOffset =  1;
+            endPosOffset =  (mNavRingAmount) + 1;
+        } else {
+            // Phone Mode
+            if (isScreenPortrait()) { // NavRing on Bottom
+                startPosOffset =  1;
+                endPosOffset =  (mNavRingAmount) + 1;
+            } else if (mLefty) { // either lefty or... (Ring is actually on right side of screen)
+                startPosOffset =  1 - (mNavRingAmount % 2);
+                middleBlanks = mNavRingAmount + 2;
+                endPosOffset = 0;
+            } else { // righty... (Ring actually on left side of tablet)
+                startPosOffset =  (Math.min(1,mNavRingAmount / 2)) + 2;
+                endPosOffset =  startPosOffset - 1;
+            }
         }
 
         intentList.clear();
