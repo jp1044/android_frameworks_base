@@ -255,7 +255,7 @@ public class SearchPanelView extends FrameLayout implements
         // Custom Targets
         ArrayList<TargetDrawable> storedDraw = new ArrayList<TargetDrawable>();
 
-        int endPosOffset;
+        int endPosOffset = 0;
         int middleBlanks = 0;
 
         int uiMode = ExtendedPropertiesUtils.getActualProperty("com.android.systemui.layout");
