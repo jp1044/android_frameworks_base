@@ -148,8 +148,7 @@ public class SearchPanelView extends FrameLayout implements
 
         mAokpTarget = new AokpTarget(context);
 
-        SettingsObserver observer = new SettingsObserver(new Handler());
-        observer.observe();
+        mObserver = new SettingsObserver(new Handler());
         updateSettings();
 
     }
@@ -160,7 +159,7 @@ public class SearchPanelView extends FrameLayout implements
             }
         }
         
-        SettingsObserver observer = new SettingsObserver(new Handler());
+        mObserver = new SettingsObserver(new Handler());
     }
 
     private H mHandler = new H();
@@ -242,6 +241,9 @@ public class SearchPanelView extends FrameLayout implements
         // TODO: fetch views
         mGlowPadView = (GlowPadView) findViewById(R.id.glow_pad_view);
         mGlowPadView.setOnTriggerListener(mGlowPadViewListener);
+
+        updateSettings();
+        setDrawables();
     }
 
     private void setDrawables() {
