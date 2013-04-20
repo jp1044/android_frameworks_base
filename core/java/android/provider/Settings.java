@@ -2556,6 +2556,35 @@ public final class Settings {
         public static final String POINTER_SPEED = "pointer_speed";
 
         /**
+         * Whether to enable pie controls?
+         * The value is integer:
+         * 2 = always on
+         * 1 = expanded desktop
+         * 0 = off
+         * Default: 0
+         * @hide
+         */
+        public static final String PIE_CONTROLS = "pie_controls";
+
+        /**
+         * Locations of the pie in the screen.
+         * (1<<0) = LEFT
+         * (1<<1) = BOTTOM
+         * (1<<2) = RIGHT
+         * (1<<3) = TOP
+         * Default: BOTTOM
+         * @hide
+         */
+        public static final String PIE_POSITIONS = "pie_positions";
+
+        /**
+         * Relative pie size (fraction)
+         * Default: 1.0f
+         * @hide
+         */
+        public static final String PIE_SIZE = "pie_size";
+
+        /**
          * Quick Settings Panel Tiles to Use
          *
          * @hide
@@ -2625,6 +2654,13 @@ public final class Settings {
          * @hide
          */
         public static final String QS_DYNAMIC_USBTETHER = "qs_dyanmic_usbtether";
+
+        /**
+         * Quick Settings Panel Dynamic Tiles
+         *
+         * @hide
+         */
+        public static final String QS_DYNAMIC_DOCK_BATTERY = "qs_dyanmic_dock_battery";
 
         /**
          * Quick Settings Panel Dynamic Tiles
@@ -2872,6 +2908,34 @@ public final class Settings {
          * @hide
          */
         public static final String EXPANDED_DESKTOP_STYLE = "expanded_desktop_style";
+
+        /**
+         * whether which Ram Usage Bar mode is used on recent switcher
+         * 0 = none, 1 = only app use, 2 = app and cache use, 3 = app, cache and system use
+         * @hide
+         */
+        public static final String RECENTS_RAM_BAR_MODE = "recents_ram_bar_mode";
+
+        /**
+         * Ram Usage Bar system mem color
+         *
+         * @hide
+         */
+        public static final String RECENTS_RAM_BAR_MEM_COLOR = "recents_ram_bar_mem_color";
+
+        /**
+         * Ram Usage Bar cached mem color
+         *
+         * @hide
+         */
+        public static final String RECENTS_RAM_BAR_CACHE_COLOR = "recents_ram_bar_cache_color";
+
+        /**
+         * Ram Usage Bar app mem color
+         *
+         * @hide
+         */
+        public static final String RECENTS_RAM_BAR_ACTIVE_APPS_COLOR = "recents_ram_bar_active_apps_color";
 
         /**
          * User Interface State
@@ -3293,6 +3357,31 @@ public final class Settings {
         public static final String SYSTEM_POWER_CRT_MODE = "system_power_crt_mode";
 
         /**
+         * Is current activity launcher or not
+         * @hide
+         */
+        public static final String IS_HOME = "is_home";
+
+        /**
+         * Sets transparency of statusbar
+         * @hide
+         */
+        public static final String STATUS_BAR_ALPHA = "status_bar_alpha";
+      
+        /**
+         * Sets color of statusbar
+         * @hide
+         */
+        public static final String STATUS_BAR_COLOR = "status_bar_color";
+        
+        /**
+         * Sets transparency mode of status and navigation bar
+         * 0 = only home, 1 = keyguard and home (default), 2 = always
+         * @hide
+         */
+        public static final String STATUS_NAV_BAR_ALPHA_MODE = "status_nav_bar_alpha_mode";
+
+        /**
          * Custom navring actions
          *
          * @hide
@@ -3339,33 +3428,6 @@ public final class Settings {
         * @hide
         */
         public static final String NOTIF_ALPHA = "notif_alpha";
-
-        /**
-         * User configurable flag for determining if NavBar is enabled
-         *
-         * @hide
-         */
-        public static final String NAVIGATION_BAR_SHOW = "navigation_bar_show";
-
-        /**
-         * Current UI Mode
-         * 
-         *  0 = Phone UI
-         *  1 = Tablet UI
-         *  2 = Phablet UI
-         *  @hide
-         */
-        public static final String CURRENT_UI_MODE = "current_ui_mode";
- 
-         /**
-         * User selected UI Mode
-         * 
-         *  0 = Phone UI
-         *  1 = Tablet UI
-         *  2 = Phablet UI
-         *  @hide
-         */
-        public static final String USER_UI_MODE = "user_ui_mode";
 
         /**
          * @hide
@@ -3492,6 +3554,36 @@ public final class Settings {
                 "navring_long_3",
                 "navring_long_4",
         };
+
+        /**
+         * @hide
+         */
+        public static final String PIE_COLOR = "pie_color";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_OUTLINE_COLOR = "pie_outline_color";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_SELECTED_COLOR = "pie_selected_color";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_LONG_PRESS_COLOR = "pie_long_press_color";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_START = "pie_start";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_DISTANCE = "pie_distance";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -3826,6 +3918,13 @@ public final class Settings {
          * @hide
          */
         public static final String NAVIGATION_BAR_ALPHA = "navigation_bar_alpha";
+
+        /**
+         * Navigation bar color.
+         *
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_COLOR = "navigation_bar_color";
 
     }
 

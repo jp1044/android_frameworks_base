@@ -30,12 +30,14 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ServiceManager;
 import android.provider.Settings;
 import android.util.AttributeSet;
+import android.util.ExtendedPropertiesUtils;
 import android.util.Slog;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -52,10 +54,11 @@ import android.widget.LinearLayout;
 import com.android.internal.statusbar.IStatusBarService;
 import com.android.systemui.R;
 import com.android.systemui.aokp.AokpTarget;
+import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.policy.ExtensibleKeyButtonView;
 import com.android.systemui.statusbar.policy.KeyButtonView;
 
-public class NavigationBarView extends LinearLayout {
+public class NavigationBarView extends LinearLayout implements BaseStatusBar.NavigationBarCallback {
     final static boolean DEBUG = false;
     final static String TAG = "PhoneStatusBar/NavigationBarView";
 
@@ -80,7 +83,6 @@ public class NavigationBarView extends LinearLayout {
     boolean mHidden, mLowProfile, mShowMenu;
     int mDisabledFlags = 0;
     int mNavigationIconHints = 0;
-
     private Drawable mBackIcon, mBackLandIcon, mBackAltIcon, mBackAltLandIcon;
     private boolean mMenuArrowKeys;
     
@@ -97,13 +99,14 @@ public class NavigationBarView extends LinearLayout {
     // Will determine if NavBar goes to the left side in Landscape Mode
     private boolean mLeftyMode;
 
-    /* 0 = Phone UI
-     * 1 = Tablet UI
-     * 2 = Phablet UI
-     */
-    int mCurrentUIMode = 0;
+    boolean mIsTablet;
+    boolean mIsPhone;
+    
+    private float mAlpha;
+    private int mAlphaMode;
+    int mNavigationBarColor = -1;
+    private boolean mIsHome = true;
 
-    private float mNavigationBarAlpha;
     public static final float KEYGUARD_ALPHA = 0.44f;
 
     public String[] mClickActions = new String[7];
@@ -336,9 +339,11 @@ public class NavigationBarView extends LinearLayout {
         }
         Drawable bg = mContext.getResources().getDrawable(R.drawable.nav_bar_bg);
         if(bg instanceof ColorDrawable) {
-            setBackground(new BackgroundAlphaColorDrawable(((ColorDrawable) bg).getColor()));
+            BackgroundAlphaColorDrawable bacd = new BackgroundAlphaColorDrawable(
+                    mNavigationBarColor > 0 ? mNavigationBarColor : ((ColorDrawable) bg).getColor());
+            setBackground(bacd);
         }
-        setBackgroundAlpha(mNavigationBarAlpha);
+        updateKeyguardAlpha();
     }
 
     private void addLightsOutButton(LinearLayout root, View v, boolean landscape, boolean empty) {
@@ -371,11 +376,11 @@ public class NavigationBarView extends LinearLayout {
 
             case KEY_MENU_RIGHT:
                 v = new KeyButtonView(mContext, null);
-                v.setLayoutParams(getLayoutParams(landscape, (mCurrentUIMode == 1) ? 80 : 40));
+                v.setLayoutParams(getLayoutParams(landscape, (mIsTablet) ? 80 : 40));
 
                 v.setId(R.id.menu);
                 v.setCode(KeyEvent.KEYCODE_MENU);
-                if (mCurrentUIMode == 1) {
+                if (mIsTablet) {
                     v.setImageResource(R.drawable.ic_sysbar_menu_big);
                     v.setVisibility(View.GONE);
                 } else {
@@ -389,11 +394,11 @@ public class NavigationBarView extends LinearLayout {
                 break;
             case KEY_MENU_LEFT:
                 v = new KeyButtonView(mContext, null);
-                v.setLayoutParams(getLayoutParams(landscape, (mCurrentUIMode == 1) ? 80 : 40));
+                v.setLayoutParams(getLayoutParams(landscape, (mIsTablet) ? 80 : 40));
 
                 v.setId(R.id.menu_left);
                 v.setCode(KeyEvent.KEYCODE_MENU);
-                if (mCurrentUIMode == 1) {
+                if (mIsTablet) {
                     v.setImageResource(R.drawable.ic_sysbar_menu_big);
                     v.setVisibility(View.GONE);
                 } else {
@@ -523,12 +528,14 @@ public class NavigationBarView extends LinearLayout {
     }
 
     private void updateKeyguardAlpha() {
-        if(!isKeyguardEnabled() && (mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) != 0) {
+        if((mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) != 0
+                || (isKeyguardEnabled() && mAlphaMode == 0)
+                || (!isKeyguardEnabled() && mIsHome == false && mAlphaMode != 2)) {
             // keyboard up, always darken it
             setBackgroundAlpha(1);
         } else {
             // if the user set alpha is below what the keygaurd alpha, match the keyguard alpha and be pretty
-            setBackgroundAlpha(isKeyguardEnabled() && mNavigationBarAlpha < KEYGUARD_ALPHA ? KEYGUARD_ALPHA : mNavigationBarAlpha);
+            setBackgroundAlpha(mAlpha);
         }
     }
 
@@ -544,7 +551,7 @@ public class NavigationBarView extends LinearLayout {
         final boolean disableSearch = ((disabledFlags & View.STATUS_BAR_DISABLE_SEARCH) != 0);
         final boolean keygaurdProbablyEnabled = isKeyguardEnabled();
 
-        if (mCurrentUIMode != 1 && SLIPPERY_WHEN_DISABLED) { // Tabletmode doesn't deal with slippery
+        if (!mIsTablet && SLIPPERY_WHEN_DISABLED) { // Tabletmode doesn't deal with slippery
             setSlippery(disableHome && disableRecent && disableBack && disableSearch);
         }
         if (!mScreenOn && mCurrentView != null) {
@@ -618,7 +625,7 @@ public class NavigationBarView extends LinearLayout {
             case VISIBILITY_ALWAYS:
                 localShow = true;
             case VISIBILITY_SYSTEM:
-                if (mCurrentUIMode == 1) {
+                if (mIsTablet) {
                     rightButton.setImageResource(R.drawable.ic_sysbar_menu_big);
                     leftButton.setImageResource(R.drawable.ic_sysbar_menu_big);
                 } else {
@@ -637,7 +644,7 @@ public class NavigationBarView extends LinearLayout {
                 break;
             case VISIBILITY_SYSTEM_AND_INVIZ:
                 if (localShow) {
-                    if (mCurrentUIMode == 1) {
+                    if (mIsTablet) {
                         rightButton.setImageResource(R.drawable.ic_sysbar_menu_big);
                         leftButton.setImageResource(R.drawable.ic_sysbar_menu_big);
                     } else {
@@ -660,7 +667,7 @@ public class NavigationBarView extends LinearLayout {
         // Tablet menu buttons should not take up space when hidden.
         switch (mMenuLocation) {
             case SHOW_BOTH_MENU:
-                if (mCurrentUIMode==1) {
+                if (mIsTablet) {
                     leftButton.setVisibility(localShow ? View.VISIBLE : View.GONE);
                     rightButton.setVisibility(localShow ? View.VISIBLE : View.GONE);
                 } else {
@@ -669,17 +676,17 @@ public class NavigationBarView extends LinearLayout {
                 }
                 break;
             case SHOW_LEFT_MENU:
-                if (mCurrentUIMode==1) {
+                if (mIsTablet) {
                     leftButton.setVisibility(localShow ? View.VISIBLE : View.GONE);
                 } else {
                     leftButton.setVisibility(localShow ? View.VISIBLE : View.INVISIBLE);
                 }
-                rightButton.setVisibility((mCurrentUIMode == 1) ? View.GONE : View.INVISIBLE);
+                rightButton.setVisibility((mIsTablet) ? View.GONE : View.INVISIBLE);
                 break;
             default:
             case SHOW_RIGHT_MENU:
-                leftButton.setVisibility((mCurrentUIMode == 1) ? View.GONE : View.INVISIBLE);
-                if (mCurrentUIMode==1) {
+                leftButton.setVisibility((mIsTablet) ? View.GONE : View.INVISIBLE);
+                if (mIsTablet) {
                     rightButton.setVisibility(localShow ? View.VISIBLE : View.GONE);
                 } else {
                     rightButton.setVisibility(localShow ? View.VISIBLE : View.INVISIBLE);
@@ -768,6 +775,10 @@ public class NavigationBarView extends LinearLayout {
          }
          mCurrentView = mRotatedViews[Surface.ROTATION_0];
 
+         // this takes care of activity broadcasts for alpha mode
+         BroadcastObserver broadcastObserver = new BroadcastObserver(new Handler());
+         broadcastObserver.observe();
+
          // this takes care of making the buttons
          SettingsObserver settingsObserver = new SettingsObserver(new Handler());
          settingsObserver.observe();
@@ -778,7 +789,7 @@ public class NavigationBarView extends LinearLayout {
         for (int i=0; i<4; i++) {
             mRotatedViews[i].setVisibility(View.GONE);
         }
-        if (mCurrentUIMode !=0) { // this is either a tablet of Phablet.  Need to stay at Rot_0
+        if (!mIsPhone) { // this is either a tablet of Phablet.  Need to stay at Rot_0
             mCurrentView = mRotatedViews[Surface.ROTATION_0];
         } else {
             mCurrentView = mRotatedViews[rot];
@@ -940,6 +951,11 @@ public class NavigationBarView extends LinearLayout {
             resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_ALPHA), false, this);
             resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.STATUS_NAV_BAR_ALPHA_MODE), false,
+                    this);
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_COLOR), false, this);
+            resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.MENU_LOCATION), false,
                     this);
             resolver.registerContentObserver(
@@ -984,8 +1000,39 @@ public class NavigationBarView extends LinearLayout {
         Drawable bg = getBackground();
         if(bg == null) return;
 
-        int a = (int) (alpha * 255);
+        if(bg instanceof BackgroundAlphaColorDrawable) {
+         // if there's a custom color while the lockscreen is on, clear it momentarily, otherwise it won't match.
+            if(mNavigationBarColor > 0) {
+                if(isKeyguardEnabled()) {
+                    ((BackgroundAlphaColorDrawable) bg).setBgColor(-1);
+                } else {
+                    ((BackgroundAlphaColorDrawable) bg).setBgColor(mNavigationBarColor);
+                }
+            }
+        }
+        int a = Math.round(alpha * 255);
         bg.setAlpha(a);
+    }
+
+    class BroadcastObserver extends ContentObserver {
+        BroadcastObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.IS_HOME), false,
+                    this);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            mIsHome = Settings.System.getInt(getContext().getContentResolver(),
+                   Settings.System.IS_HOME, 1) == 1;
+            updateKeyguardAlpha();
+        }
     }
 
     protected void updateSettings() {
@@ -993,14 +1040,20 @@ public class NavigationBarView extends LinearLayout {
 
         mMenuLocation = Settings.System.getInt(resolver,
                 Settings.System.MENU_LOCATION, SHOW_RIGHT_MENU);
-        mNavigationBarAlpha = Settings.System.getFloat(resolver,
-                Settings.System.NAVIGATION_BAR_ALPHA, new Float(mContext.getResources().getInteger(R.integer.navigation_bar_transparency) / 255));
+        mAlpha = Settings.System.getFloat(resolver,
+                Settings.System.NAVIGATION_BAR_ALPHA,
+                new Float(mContext.getResources().getInteger(
+                        R.integer.navigation_bar_transparency) / 255));
+        mAlphaMode = Settings.System.getInt(resolver,
+                Settings.System.STATUS_NAV_BAR_ALPHA_MODE, 1);
+        mNavigationBarColor = Settings.System.getInt(resolver,
+                Settings.System.NAVIGATION_BAR_COLOR, -1);
         mMenuVisbility = Settings.System.getInt(resolver,
                 Settings.System.MENU_VISIBILITY, VISIBILITY_SYSTEM);
         mMenuArrowKeys = Settings.System.getBoolean(resolver,
                 Settings.System.NAVIGATION_BAR_MENU_ARROW_KEYS, true);
-        mCurrentUIMode = Settings.System.getInt(resolver,
-                Settings.System.CURRENT_UI_MODE,0);
+        mIsTablet = ExtendedPropertiesUtils.isTablet();
+        mIsPhone = ExtendedPropertiesUtils.isPhone();
         mLeftyMode = Settings.System.getBoolean(resolver,
                 Settings.System.NAVIGATION_BAR_LEFTY_MODE, false);
         mNumberOfButtons = Settings.System.getInt(resolver,

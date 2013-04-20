@@ -116,9 +116,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     private ToggleAction mExpandDesktopModeOn;
 
-    private NavBarAction mNavBarHideToggle;
-
-
     private MyAdapter mAdapter;
 
     private boolean mKeyguardShowing = false;
@@ -231,7 +228,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
         mExpandDesktopModeOn = new ToggleAction(
                 R.drawable.ic_lock_expanded_desktop,
-                R.drawable.ic_lock_expanded_desktop,
+                R.drawable.ic_lock_expanded_desktop_off,
                 R.string.global_actions_toggle_expanded_desktop_mode,
                 R.string.global_actions_expanded_desktop_mode_on_status,
                 R.string.global_actions_expanded_desktop_mode_off_status) {
@@ -397,11 +394,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         if (Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.POWER_MENU_AIRPLANE_ENABLED, 1) == 1) {
             mItems.add(mAirplaneModeOn);
-        }
-
-        // Next NavBar Hide
-        if(mEnableNavBarHideToggle) {
-            mItems.add(mNavBarHideToggle);
         }
 
         // next: bug report, if enabled
@@ -1125,7 +1117,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     private static class NavBarAction implements Action, View.OnClickListener {
 
-        private final int[] ITEM_IDS = { R.id.navbartoggle, R.id.navbarhome, R.id.navbarback,R.id.navbarmenu };
+        private final int[] ITEM_IDS = { R.id.navbarhome, R.id.navbarback,R.id.navbarmenu };
 
         public Context mContext;
         public boolean mNavbarVisible;
