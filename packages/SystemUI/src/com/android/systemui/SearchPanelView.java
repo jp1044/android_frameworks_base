@@ -104,7 +104,6 @@ public class SearchPanelView extends FrameLayout implements
     private final Context mContext;
     private BaseStatusBar mBar;
     private StatusBarTouchProxy mStatusBarTouchProxy;
-    private SettingsObserver mObserver;
 
     private boolean mShowing;
     private View mSearchTargetsContainer;
@@ -159,7 +158,6 @@ public class SearchPanelView extends FrameLayout implements
             switch (m.what) {
             }
         }
-
     }
 
     private H mHandler = new H();
@@ -241,6 +239,9 @@ public class SearchPanelView extends FrameLayout implements
         // TODO: fetch views
         mGlowPadView = (GlowPadView) findViewById(R.id.glow_pad_view);
         mGlowPadView.setOnTriggerListener(mGlowPadViewListener);
+
+        updateSettings();
+        setDrawables();
     }
 
     private void setDrawables() {
@@ -491,21 +492,6 @@ public class SearchPanelView extends FrameLayout implements
         return true;
     }
 
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
-        mObserver.observe();
-        updateSettings();
-        setDrawables();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mObserver.unobserve();
-    }
-
     /**
      * Whether the panel is showing, or, if it's animating, whether it will be
      * when the animation is done.
@@ -587,14 +573,7 @@ public class SearchPanelView extends FrameLayout implements
 	            resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.SYSTEMUI_NAVRING_LONG[i]), false, this);
             }
-<<<<<<< HEAD
 
-=======
-        }
-
-        void unobserve() {
-            mContext.getContentResolver().unregisterContentObserver(this);
->>>>>>> 9ab3e99... SystemUI: fix memory leaks
         }
 
         @Override
