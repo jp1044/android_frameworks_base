@@ -25,7 +25,6 @@ import android.graphics.RectF;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.PorterDuff.Mode;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -97,23 +96,13 @@ public class PieItem extends PieLayout.PieDrawable {
 
         final Resources res = context.getResources();
 
-        int color = Settings.System.getInt(context.getContentResolver(),
-                Settings.System.PIE_COLOR, res.getColor(R.color.pie_background_color));
-        int selectedColor = Settings.System.getInt(context.getContentResolver(),
-                Settings.System.PIE_SELECTED_COLOR, res.getColor(R.color.pie_selected_color));
-        int outlineColor = Settings.System.getInt(context.getContentResolver(),
-                Settings.System.PIE_OUTLINE_COLOR, res.getColor(R.color.pie_outline_color));
-        int longpressColor = Settings.System.getInt(context.getContentResolver(),
-                Settings.System.PIE_LONG_PRESS_COLOR, res.getColor(R.color.pie_long_press_color));
-
-
-        mBackgroundPaint.setColor(color);
+        mBackgroundPaint.setColor(res.getColor(R.color.pie_background_color));
         mBackgroundPaint.setAntiAlias(true);
-        mSelectedPaint.setColor(selectedColor);
+        mSelectedPaint.setColor(res.getColor(R.color.pie_selected_color));
         mSelectedPaint.setAntiAlias(true);
-        mLongPressPaint.setColor(longpressColor);
+        mLongPressPaint.setColor(res.getColor(R.color.pie_long_pressed_color));
         mLongPressPaint.setAntiAlias(true);
-        mOutlinePaint.setColor(outlineColor);
+        mOutlinePaint.setColor(res.getColor(R.color.pie_outline_color));
         mOutlinePaint.setAntiAlias(true);
         mOutlinePaint.setStyle(Style.STROKE);
         mOutlinePaint.setStrokeWidth(res.getDimensionPixelSize(R.dimen.pie_outline));
