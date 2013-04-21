@@ -158,8 +158,6 @@ public class SearchPanelView extends FrameLayout implements
             switch (m.what) {
             }
         }
-        
-        mObserver = new SettingsObserver(new Handler());
     }
 
     private H mHandler = new H();
