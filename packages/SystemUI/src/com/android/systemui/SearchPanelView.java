@@ -148,8 +148,7 @@ public class SearchPanelView extends FrameLayout implements
 
         mAokpTarget = new AokpTarget(context);
 
-        SettingsObserver observer = new SettingsObserver(new Handler());
-        observer.observe();
+        mObserver = new SettingsObserver(new Handler());
         updateSettings();
 
     }
@@ -159,8 +158,6 @@ public class SearchPanelView extends FrameLayout implements
             switch (m.what) {
             }
         }
-        
-        SettingsObserver observer = new SettingsObserver(new Handler());
     }
 
     private H mHandler = new H();
