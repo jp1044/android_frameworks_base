@@ -591,10 +591,6 @@ public class SearchPanelView extends FrameLayout implements
             mContext.getContentResolver().unregisterContentObserver(this);
         }
 
-        void unobserve() {
-            mContext.getContentResolver().unregisterContentObserver(this);
-        }
-
         @Override
         public void onChange(boolean selfChange) {
             updateSettings();
