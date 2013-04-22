@@ -16,21 +16,18 @@ import com.android.systemui.statusbar.phone.QuickSettingsController;
 
 public class HybridTile extends QuickSettingsTile {
 
-    public HybridTile(Context context, LayoutInflater inflater,
-            QuickSettingsContainerView container,
-            final QuickSettingsController qsc, Handler handler) {
-            super(context, inflater, container, qsc);
-            updateTile();
+    public HybridTile(Context context, final QuickSettingsController qsc) {
+        super(context, qsc);
 
-         mOnClick = new View.OnClickListener() {
+        mOnClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              Intent intent = new Intent("android.intent.action.MAIN");
-              intent.setClassName("com.android.settings", "com.android.settings.Settings$HybridSettingsActivity");
+                Intent intent = new Intent("android.intent.action.MAIN");
+                intent.setClassName("com.android.settings", "com.android.settings.Settings$HybridSettingsActivity");
 	
-            startSettingsActivity(intent);
+                startSettingsActivity(intent);
             }
-         };	
+        };	
     }
 
     void onPostCreate() {
