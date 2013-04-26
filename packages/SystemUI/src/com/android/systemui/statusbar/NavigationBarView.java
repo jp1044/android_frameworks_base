@@ -1041,9 +1041,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
         mMenuLocation = Settings.System.getInt(resolver,
                 Settings.System.MENU_LOCATION, SHOW_RIGHT_MENU);
         mAlpha = Settings.System.getFloat(resolver,
-                Settings.System.NAVIGATION_BAR_ALPHA,
-                new Float(mContext.getResources().getInteger(
-                        R.integer.navigation_bar_transparency) / 255));
+                Settings.System.NAVIGATION_BAR_ALPHA, 1.0f);
         mAlphaMode = Settings.System.getInt(resolver,
                 Settings.System.STATUS_NAV_BAR_ALPHA_MODE, 1);
         mNavigationBarColor = Settings.System.getInt(resolver,
