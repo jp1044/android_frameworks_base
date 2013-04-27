@@ -35,7 +35,7 @@ public class CompatModeButton extends ImageView {
     private static final boolean DEBUG = false;
     private static final String TAG = "StatusBar.CompatModeButton";
     
-    boolen mHideExtras = false;
+    boolean mHideExtras = false;
     
     private ContentResolver resolver;
 
