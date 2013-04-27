@@ -2909,6 +2909,12 @@ public final class Settings {
          */
         public static final String EXPANDED_DESKTOP_STYLE = "expanded_desktop_style";
         
+        /*
+         * This will hide tabUI extras; compatibility button etc.
+         * @ hide
+         */
+        public static final String HIDE_EXTRAS_SYSTEM_BAR = "hide_extras_system_bar";
+        
         /**
          * Whether Status bar should be hiidden when there are no
          * notifications
