@@ -233,12 +233,9 @@ public class TabletStatusBar extends BaseStatusBar implements
                 WindowManager.LayoutParams.TYPE_NAVIGATION_BAR,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     | WindowManager.LayoutParams.FLAG_TOUCHABLE_WHEN_WAKING
-                    | WindowManager.LayoutParams.FLAG_SPLIT_TOUCH,
+                    | WindowManager.LayoutParams.FLAG_SPLIT_TOUCH
+                    | WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
                 PixelFormat.TRANSLUCENT);
-
-        if (ActivityManager.isHighEndGfx()) {
-            lp.flags |= WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
-        }
 
         lp.gravity = getStatusBarGravity();
         lp.setTitle("SystemBar");
@@ -1024,6 +1021,7 @@ public class TabletStatusBar extends BaseStatusBar implements
             // all navigation bar listeners will take care of these
             propagateDisabledFlags(state);
         }
+        mStatusBarView.updateBackgroundAlpha();
     }
 
     private void setNavigationVisibility(int visibility) {
@@ -1037,6 +1035,8 @@ public class TabletStatusBar extends BaseStatusBar implements
 
         mInputMethodSwitchButton.setScreenLocked(
                 (visibility & StatusBarManager.DISABLE_SYSTEM_INFO) != 0);
+
+        mStatusBarView.updateBackgroundAlpha();
     }
 
     private boolean hasTicker(Notification n) {
