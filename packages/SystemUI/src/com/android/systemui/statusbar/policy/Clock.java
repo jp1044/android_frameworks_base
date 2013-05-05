@@ -76,6 +76,8 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
 
     protected int mClockDateStyle = CLOCK_DATE_STYLE_UPPERCASE;
 
+    private SettingsObserver mObserver;
+
     public static final int STYLE_CLOCK_RIGHT   = 0;
     public static final int STYLE_CLOCK_CENTER  = 1;
 
@@ -119,6 +121,10 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
             updateSettings();
         }
 
+        void unobserve() {
+            mContext.getContentResolver().unregisterContentObserver(this);
+        }
+
         @Override
         public void onChange(boolean selfChange) {
             updateSettings();
@@ -135,6 +141,14 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
 
     public Clock(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+
+        mHandler = new Handler();
+        mObserver = new SettingsObserver(mHandler);
+        if (isClickable()) {
+            setOnClickListener(this);
+            setOnLongClickListener(this);
+        }
+        updateSettings();
     }
 
     @Override
@@ -152,6 +166,7 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
             filter.addAction(Intent.ACTION_USER_SWITCHED);
 
             getContext().registerReceiver(mIntentReceiver, filter, null, getHandler());
+            mObserver.observe();
         }
 
         // NOTE: It's safe to do these after registering the receiver since the receiver always runs
@@ -175,6 +190,7 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
         super.onDetachedFromWindow();
         if (mAttached) {
             getContext().unregisterReceiver(mIntentReceiver);
+            mObserver.unobserve();
             mAttached = false;
         }
     }
