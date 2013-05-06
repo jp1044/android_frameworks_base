@@ -34,6 +34,10 @@ import com.android.systemui.statusbar.policy.PieController;
 import com.android.systemui.statusbar.policy.PieController.Position;
 import com.android.systemui.statusbar.tablet.StatusBarPanel;
 import com.android.systemui.statusbar.WidgetView;
+import com.android.systemui.statusbar.policy.BatteryController;
+import com.android.systemui.statusbar.policy.BluetoothController;
+import com.android.systemui.statusbar.policy.DockBatteryController;
+import com.android.systemui.statusbar.policy.NetworkController;
 
 import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
@@ -1569,4 +1573,12 @@ public abstract class BaseStatusBar extends SystemUI implements
                     Settings.System.PIE_DISTANCE), false, this);
         }
     };
+
+    public abstract BatteryController getBatteryController();
+
+    public abstract NetworkController getNetworkController();
+
+    public abstract BluetoothController getBluetoothController();
+
+    public abstract DockBatteryController getDockBatteryController();
 }

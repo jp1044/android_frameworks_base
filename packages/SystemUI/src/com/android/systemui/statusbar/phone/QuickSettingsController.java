@@ -191,15 +191,15 @@ public class QuickSettingsController {
             if (tile.equals(TILE_USER)) {
                 qs = new UserTile(mContext, this);
             } else if (tile.equals(TILE_BATTERY)) {
-                qs = new BatteryTile(mContext, this, mStatusBarService.mBatteryController);
+                qs = new BatteryTile(mContext, this, mStatusBarService.getBatteryController());
             } else if (tile.equals(TILE_SETTINGS)) {
                 qs = new PreferencesTile(mContext, this);
             } else if (tile.equals(TILE_WIFI)) {
-                qs = new WiFiTile(mContext, this, mStatusBarService.mNetworkController);
+                qs = new WiFiTile(mContext, this, mStatusBarService.getNetworkController());
             } else if (tile.equals(TILE_GPS)) {
                 qs = new GPSTile(mContext, this);
             } else if (tile.equals(TILE_BLUETOOTH) && bluetoothSupported) {
-                qs = new BluetoothTile(mContext, this, mStatusBarService.mBluetoothController);
+                qs = new BluetoothTile(mContext, this, mStatusBarService.getBluetoothController());
             } else if (tile.equals(TILE_BRIGHTNESS)) {
                 qs = new BrightnessTile(mContext, this, mHandler);
             } else if (tile.equals(TILE_RINGER)) {
@@ -211,15 +211,15 @@ public class QuickSettingsController {
             } else if (tile.equals(TILE_SCREENTIMEOUT)) {
                 qs = new ScreenTimeoutTile(mContext, this);
             } else if (tile.equals(TILE_MOBILEDATA) && mobileDataSupported) {
-                qs = new MobileNetworkTile(mContext, this, mStatusBarService.mNetworkController);
+                qs = new MobileNetworkTile(mContext, this, mStatusBarService.getNetworkController());
             } else if (tile.equals(TILE_LOCKSCREEN)) {
                 qs = new ToggleLockscreenTile(mContext, this);
             } else if (tile.equals(TILE_NETWORKMODE) && mobileDataSupported) {
-                qs = new MobileNetworkTypeTile(mContext, this, mStatusBarService.mNetworkController);
+                qs = new MobileNetworkTypeTile(mContext, this, mStatusBarService.getNetworkController());
             } else if (tile.equals(TILE_AUTOROTATE)) {
                 qs = new AutoRotateTile(mContext, this, mHandler);
             } else if (tile.equals(TILE_AIRPLANE)) {
-                qs = new AirplaneModeTile(mContext, this, mStatusBarService.mNetworkController);
+                qs = new AirplaneModeTile(mContext, this, mStatusBarService.getNetworkController());
             } else if (tile.equals(TILE_TORCH)) {
                 qs = new TorchTile(mContext, this, mHandler);
             } else if (tile.equals(TILE_SLEEP)) {
@@ -303,15 +303,10 @@ public class QuickSettingsController {
             return;
         }
 
-        QuickSettingsTile qs = new DockBatteryTile(mContext, this, mStatusBarService.mDockBatteryController);
+        QuickSettingsTile qs = new DockBatteryTile(mContext, this, mStatusBarService.getDockBatteryController());
         qs.setupQuickSettingsTile(inflater, mContainerView);
         mQuickSettingsTiles.add(qs);
     }
-
-    public void setupQuickSettings() {
-        mQuickSettingsTiles.clear();
-        mContainerView.removeAllViews();
-        // Clear out old receiver
 
     public void shutdown() {
         if (mObserver != null) {
@@ -327,7 +322,7 @@ public class QuickSettingsController {
         mContainerView.removeAllViews();
     }
 
-    protected void setupQuickSettings() {
+    public void setupQuickSettings() {
         shutdown();
         mReceiver = new QSBroadcastReceiver();
         mReceiverMap.clear();

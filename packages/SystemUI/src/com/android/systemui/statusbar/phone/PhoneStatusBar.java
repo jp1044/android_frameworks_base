@@ -3032,4 +3032,24 @@ public class PhoneStatusBar extends BaseStatusBar {
         }
 
     }
+
+    @Override
+    public BatteryController getBatteryController() {
+        return mBatteryController;
+    }
+
+    @Override
+    public NetworkController getNetworkController() {
+        return mNetworkController;
+    }
+
+    @Override
+    public BluetoothController getBluetoothController() {
+        return mBluetoothController;
+    }
+
+    @Override
+    public DockBatteryController getDockBatteryController() {
+        return mDockBatteryController;
+    }
 }

@@ -78,6 +78,7 @@ import com.android.systemui.statusbar.StatusBarIconView;
 import com.android.systemui.statusbar.policy.BatteryController;
 import com.android.systemui.statusbar.policy.BluetoothController;
 import com.android.systemui.statusbar.policy.CompatModeButton;
+import com.android.systemui.statusbar.policy.DockBatteryController;
 import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.policy.NetworkController;
 import com.android.systemui.statusbar.policy.NotificationRowLayout;
@@ -1628,6 +1629,26 @@ public class TabletStatusBar extends BaseStatusBar implements
     protected boolean shouldDisableNavbarGestures() {
         return mNotificationPanel.getVisibility() == View.VISIBLE
                 || (mDisabled & StatusBarManager.DISABLE_HOME) != 0;
+    }
+
+    @Override
+    public BatteryController getBatteryController() {
+        return mBatteryController;
+    }
+
+    @Override
+    public NetworkController getNetworkController() {
+        return mNetworkController;
+    }
+
+    @Override
+    public BluetoothController getBluetoothController() {
+        return mBluetoothController;
+    }
+
+    @Override
+    public DockBatteryController getDockBatteryController() {
+        return null;
     }
 }
 

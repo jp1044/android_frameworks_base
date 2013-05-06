@@ -19,6 +19,10 @@ package com.android.systemui.statusbar.tv;
 import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.statusbar.StatusBarNotification;
 import com.android.systemui.statusbar.BaseStatusBar;
+import com.android.systemui.statusbar.policy.BatteryController;
+import com.android.systemui.statusbar.policy.BluetoothController;
+import com.android.systemui.statusbar.policy.DockBatteryController;
+import com.android.systemui.statusbar.policy.NetworkController;
 
 import android.os.IBinder;
 import android.view.View;
@@ -152,5 +156,22 @@ public class TvStatusBar extends BaseStatusBar {
 
     @Override
     public void animateExpandSettingsPanel() {
+    }
+
+    @Override
+    public BatteryController getBatteryController() {
+        return null;    }
+
+    @Override
+    public NetworkController getNetworkController() {
+        return null;    }
+
+    @Override
+    public BluetoothController getBluetoothController() {
+        return null;    }
+
+    @Override
+    public DockBatteryController getDockBatteryController() {
+        return null;
     }
 }
