@@ -528,15 +528,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     }
 
     private void updateKeyguardAlpha() {
-        if((mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) != 0
-                || (isKeyguardEnabled() && mAlphaMode == 0)
-                || (!isKeyguardEnabled() && mIsHome == false && mAlphaMode != 2)) {
-            // keyboard up, always darken it
-            setBackgroundAlpha(1);
-        } else {
-            // if the user set alpha is below what the keygaurd alpha, match the keyguard alpha and be pretty
-            setBackgroundAlpha(mAlpha);
-        }
+        setBackgroundAlpha(mAlpha);
     }
 
     public void setDisabledFlags(int disabledFlags, boolean force) {
