@@ -201,9 +201,16 @@ public class TabletStatusBarView extends PanelBar {
         Drawable bg = getBackground();
         if (bg == null)
             return;
-        
+
         if(bg instanceof BackgroundAlphaColorDrawable) {
-            ((BackgroundAlphaColorDrawable) bg).setBgColor(mNavigationBarColor);
+            // if there's a custom color while the lockscreen is on, clear it momentarily, otherwise it won't match.
+            if(mNavigationBarColor > 0) {
+                if(isKeyguardEnabled()) {
+                    ((BackgroundAlphaColorDrawable) bg).setBgColor(-1);
+                } else {
+                    ((BackgroundAlphaColorDrawable) bg).setBgColor(mNavigationBarColor);
+                }
+            }
         }
         int a = (int) (alpha * 255);
         bg.setAlpha(a);
@@ -213,7 +220,7 @@ public class TabletStatusBarView extends PanelBar {
         Drawable bg = mContext.getResources().getDrawable(R.drawable.status_bar_background);
         if(bg instanceof ColorDrawable) {
             BackgroundAlphaColorDrawable bacd = new BackgroundAlphaColorDrawable(
-            mNavigationBarColor != -1 ? mNavigationBarColor : ((ColorDrawable) bg).getColor());
+                mNavigationBarColor != -1 ? mNavigationBarColor : ((ColorDrawable) bg).getColor());
             setBackground(bacd);
         }
         if(isKeyguardEnabled() && mAlphaMode == 0) {
