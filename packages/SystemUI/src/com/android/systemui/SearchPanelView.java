@@ -262,8 +262,10 @@ public class SearchPanelView extends FrameLayout implements
                 startPosOffset =  (mNavRingAmount) + 1;
                 endPosOffset =  (mNavRingAmount * 2) + 1;
             } else { // righty... (Ring actually on left side of tablet)
-                startPosOffset =  1;
-                endPosOffset = (mNavRingAmount * 3) + 1;
+                //startPosOffset =  1;
+                //endPosOffset = (mNavRingAmount * 3) + 1;
+    	        startPosOffset =  1;
+	            endPosOffset =  (mNavRingAmount) + 1;
             }
         } else if (uiMode >= 600) {
             // Phablet Mode - Search Ring stays at bottom
