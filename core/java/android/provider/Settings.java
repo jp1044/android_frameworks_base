@@ -3595,16 +3595,6 @@ public final class Settings {
         public static final String PIE_LONG_PRESS_COLOR = "pie_long_press_color";
 
         /**
-         * @hide
-         */
-        public static final String PIE_START = "pie_start";
-
-        /**
-         * @hide
-         */
-        public static final String PIE_DISTANCE = "pie_distance";
-
-        /**
          * Volume key controls ringtone or media sound stream
          *
          * @hide
