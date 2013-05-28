@@ -1522,9 +1522,7 @@ public abstract class BaseStatusBar extends SystemUI implements
 
         int width = (int) (res.getDisplayMetrics().widthPixels * 0.8f);
         int height = (int) (res.getDisplayMetrics().heightPixels * 0.8f);
-        int triggerThickness = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_START,
-                (int) (res.getDimensionPixelSize(R.dimen.pie_trigger_height)));
+        int triggerThickness = (int) (res.getDimensionPixelSize(R.dimen.pie_trigger_height));
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
                 (position == Position.TOP || position == Position.BOTTOM
                         ? width : triggerThickness),
