@@ -2935,19 +2935,6 @@ public final class Settings {
          * @ hide
          */
         public static final String HIDE_EXTRAS_SYSTEM_BAR = "hide_extras_system_bar";
-        
-        /**
-         * Whether Status bar should be hiidden when there are no
-         * notifications
-         * @hide
-         */
-        public static final String AUTO_HIDE_STATUSBAR = "auto_hide_statusbar";
-        
-        /**
-         * Whether Status Bar is currently hidden or not
-         * @hide
-         */
-        public static final String HIDE_STATUSBAR = "hide_statusbar";
 
         /**
          * whether which Ram Usage Bar mode is used on recent switcher
