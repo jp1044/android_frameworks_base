@@ -2924,6 +2924,12 @@ public final class Settings {
          * @hide
          */
         public static final String FULLSCREEN_STATUSBAR = "fullscreen_statusbar"; 
+
+        /**
+         * Timeout of fullscreen Status bar
+         * @hide
+         */
+        public static final String FULLSCREEN_STATUSBAR_TIMEOUT = "fullscreen_statusbar_timeout"; 
         
         /**
          * Whether Status Bar is currently hidden or not
