@@ -63,7 +63,6 @@ import android.widget.Toast;
 
 import com.android.internal.util.cm.DevUtils;
 import com.android.internal.util.pie.PiePosition;
-import com.android.internal.util.pie.PieServiceConstants;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.NavigationButtons;
@@ -217,8 +216,6 @@ public class PieController implements BaseStatusBar.NavigationBarCallback, PieVi
             // trigger setupListener()
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.PIE_POSITIONS), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_SENSITIVITY), false, this);
         }
 
         @Override
@@ -355,17 +352,8 @@ public class PieController implements BaseStatusBar.NavigationBarCallback, PieVi
 
         mPieTriggerSlots = Settings.System.getInt(resolver,
                 Settings.System.PIE_POSITIONS, PiePosition.BOTTOM.FLAG);
-
-        int sensitivity = Settings.System.getInt(resolver,
-                Settings.System.PIE_SENSITIVITY, 3);
-        if (sensitivity < PieServiceConstants.SENSITIVITY_LOWEST
-                || sensitivity > PieServiceConstants.SENSITIVITY_HIGHEST) {
-            sensitivity = PieServiceConstants.SENSITIVITY_DEFAULT;
-        }
-
         mPieManager.updatePieActivationListener(mPieActivationListener,
-                sensitivity<<PieServiceConstants.SENSITIVITY_SHIFT
-                | mPieTriggerSlots & mPieTriggerMask);
+                mPieTriggerSlots & mPieTriggerMask);
     }
 
     private void setupNavigationItems() {
