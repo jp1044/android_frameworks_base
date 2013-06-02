@@ -216,4 +216,18 @@
     <dimen name="status_bar_battery_cluster_padding">2dip</dimen>
     <!-- The margin adjusment of the text items of the battery cluster -->
     <dimen name="status_bar_battery_cluster_text_margin">-1dip</dimen>
+    
+    <!--  Amount of Margin to offset NavRing in Portrait Mode -->
+    <dimen name="navring_left_margin_port">-600dp</dimen>
+    <!--  Amount of Margin to offset NavRing in Landscape Mode -->
+    <dimen name="navring_left_margin_land">-800dp</dimen>
+    <!--  Height of NavRing in Tablet Mode Landscape -->
+    <dimen name="navring_height_tablet_landscape">300dp</dimen>
+    <!--  Height of NavRing in Tablet Mode Portrait -->
+    <dimen name="navring_height_tablet_portrait">250dp</dimen>
+    <!--  Radius of NavRing in Tablet Mode Landscape -->
+    <dimen name="navring_radius_tablet_landscape">300dp</dimen>
+    <!--  Radius of NavRing in Tablet Mode Landscape -->
+    <dimen name="navring_radius_tablet_portrait">300dp</dimen>
+    
 </resources>
