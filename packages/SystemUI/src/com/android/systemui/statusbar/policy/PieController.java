@@ -105,7 +105,7 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
     private IWindowManager mWm;
     private int mBatteryLevel;
     private int mBatteryStatus;
-    private TelephonyManager mTelephonyManager;
+    private boolean mHasTelephony;
     private ServiceState mServiceState;
 
     // all pie slices that are managed by the controller
@@ -321,10 +321,8 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         mVibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         mWm = IWindowManager.Stub.asInterface(ServiceManager.getService("window"));
 
-        if (mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
-            mTelephonyManager =
-                    (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-        }
+        final PackageManager pm = mContext.getPackageManager();
+        mHasTelephony = pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY);
 
         final Resources res = mContext.getResources();
         Tracker.sDistance = res.getDimensionPixelSize(R.dimen.pie_trigger_distance);
@@ -333,27 +331,11 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         mBackAltIcon = res.getDrawable(R.drawable.ic_sysbar_back_ime);
     }
 
-    public void detachContainer() {
-        if (mPieContainer == null) {
-            return;
-        }
-
-        if (mTelephonyManager != null) {
-            mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_NONE);
-        }
-
-        mContext.unregisterReceiver(mBroadcastReceiver);
-        mContext.getContentResolver().unregisterContentObserver(mSettingsObserver);
-
-        mPieContainer.clearSlices();
-        mPieContainer = null;
-    }
-
-    public void attachStatusBar(BaseStatusBar statusBar) {
+    public void attachTo(BaseStatusBar statusBar) {
         mStatusBar = statusBar;
     }
 
-    public void attachContainer(PieLayout container) {
+    public void attachTo(PieLayout container) {
         mPieContainer = container;
         mPieContainer.clearSlices();
 
@@ -384,13 +366,17 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         // start listening for changes
         mSettingsObserver.observe();
 
+        mContext.registerReceiver(mBroadcastReceiver,
+                new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BATTERY_CHANGED);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         mContext.registerReceiver(mBroadcastReceiver, filter);
 
-        if (mTelephonyManager != null) {
-            mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_SERVICE_STATE);
+        if (mHasTelephony) {
+            TelephonyManager telephonyManager =
+                    (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+            telephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_SERVICE_STATE);
         }
     }
 
@@ -668,7 +654,7 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
     }
 
     public String getOperatorState() {
-        if (mTelephonyManager == null) {
+        if (!mHasTelephony) {
             return null;
         }
         if (mServiceState == null || mServiceState.getState() == ServiceState.STATE_OUT_OF_SERVICE) {
