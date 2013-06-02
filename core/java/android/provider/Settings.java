@@ -3573,21 +3573,6 @@ public final class Settings {
         };
 
         /**
-         * @hide
-         */
-        public static final String PIE_COLOR = "pie_color";
-
-        /**
-         * @hide
-         */
-        public static final String PIE_OUTLINE_COLOR = "pie_outline_color";
-
-        /**
-         * @hide
-         */
-        public static final String PIE_SELECTED_COLOR = "pie_selected_color";
-
-        /**
          * Volume key controls ringtone or media sound stream
          *
          * @hide

@@ -1524,18 +1524,6 @@ public abstract class BaseStatusBar extends SystemUI implements
             super(handler);
             mHandler = handler;
         }
-
-        void observe(Context context) {
-            ContentResolver resolver = context.getContentResolver();
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_COLOR), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_SELECTED_COLOR), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_OUTLINE_COLOR), false, this);
-             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_LONG_PRESS_COLOR), false, this);
-        }
     };
 
     public abstract BatteryController getBatteryController();
@@ -1575,4 +1563,5 @@ public abstract class BaseStatusBar extends SystemUI implements
         lp.gravity = position.ANDROID_GRAVITY;
         return lp;
     }
+
 }
