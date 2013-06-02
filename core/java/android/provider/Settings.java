@@ -3588,11 +3588,6 @@ public final class Settings {
         public static final String PIE_SELECTED_COLOR = "pie_selected_color";
 
         /**
-         * @hide
-         */
-        public static final String PIE_LONG_PRESS_COLOR = "pie_long_press_color";
-
-        /**
          * Volume key controls ringtone or media sound stream
          *
          * @hide

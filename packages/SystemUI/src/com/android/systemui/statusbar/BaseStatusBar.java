@@ -1575,5 +1575,4 @@ public abstract class BaseStatusBar extends SystemUI implements
         lp.gravity = position.ANDROID_GRAVITY;
         return lp;
     }
-
 }

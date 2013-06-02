@@ -103,15 +103,12 @@ public class PieItem extends PieLayout.PieDrawable {
                 Settings.System.PIE_SELECTED_COLOR, res.getColor(R.color.pie_selected_color));
         int outlineColor = Settings.System.getInt(context.getContentResolver(),
                 Settings.System.PIE_OUTLINE_COLOR, res.getColor(R.color.pie_outline_color));
-        int longpressColor = Settings.System.getInt(context.getContentResolver(),
-                Settings.System.PIE_LONG_PRESS_COLOR, res.getColor(R.color.pie_long_press_color));
-
 
         mBackgroundPaint.setColor(color);
         mBackgroundPaint.setAntiAlias(true);
         mSelectedPaint.setColor(selectedColor);
         mSelectedPaint.setAntiAlias(true);
-        mLongPressPaint.setColor(longpressColor);
+        mLongPressPaint.setColor(res.getColor(R.color.pie_long_pressed_color));
         mLongPressPaint.setAntiAlias(true);
         mOutlinePaint.setColor(outlineColor);
         mOutlinePaint.setAntiAlias(true);
