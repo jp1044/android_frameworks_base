@@ -101,6 +101,7 @@ import com.android.systemui.statusbar.policy.DockBatteryController;
 import com.android.systemui.statusbar.policy.NotificationRowLayout;
 import com.android.systemui.statusbar.tablet.StatusBarPanel;
 import com.android.systemui.statusbar.view.PieStatusPanel;
+import com.android.systemui.statusbar.view.PieExpandPanel;
 
 import java.util.ArrayList;
 import java.math.BigInteger;
@@ -182,7 +183,7 @@ public abstract class BaseStatusBar extends SystemUI implements
     // Pie controls
     public PieControlPanel mPieControlPanel;
     public View mPieControlsTrigger;
-    public View mContainer;
+    public PieExpandPanel mContainer;
     int mIndex;
 
     // Policy
@@ -240,9 +241,10 @@ public abstract class BaseStatusBar extends SystemUI implements
         return mPile;
     }
 
-    public IStatusBarService getStatusBarService() {
+    public IStatusBarService getService() {
         return mBarService;
     }
+
 
     public boolean isDeviceProvisioned() {
         return mDeviceProvisioned;
@@ -337,7 +339,7 @@ public abstract class BaseStatusBar extends SystemUI implements
         public boolean onTouch(View v, MotionEvent event) {
             final int action = event.getAction();
 
-            if (!mPieControlPanel.isShowing()) {
+            if (!mPieControlPanel.isShowing() && ! mPieControlPanel.getKeyguardStatus()) {
                 switch(action) {
                     case MotionEvent.ACTION_DOWN:
                         centerPie = Settings.System.getInt(mContext.getContentResolver(), Settings.System.PIE_CENTER, 1) == 1;
@@ -501,7 +503,8 @@ public abstract class BaseStatusBar extends SystemUI implements
                 // Add panel window, one to be used by all pies that is
                 LayoutInflater inflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-                mContainer = inflater.inflate(R.layout.pie_expanded_panel, null);
+                mContainer = (PieExpandPanel)inflater.inflate(R.layout.pie_expanded_panel, null);
+                mContainer.init(mPile, mContainer.findViewById(R.id.content_scroll));
                 mWindowManager.addView(mContainer, PieStatusPanel.getFlipPanelLayoutParams());
             }
 

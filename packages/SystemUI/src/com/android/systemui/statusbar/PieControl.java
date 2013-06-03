@@ -52,7 +52,7 @@ public class PieControl implements OnClickListener {
     public static final String SEARCH_BUTTON = "##search##";
     public static final String RECENT_BUTTON = "##recent##";
     public static final String LAST_APP_BUTTON = "##lastapp##";
-
+    
     protected Context mContext;
     protected PieMenu mPie;
     protected int mItemSize;
@@ -65,83 +65,83 @@ public class PieControl implements OnClickListener {
     private PieItem mSearch;
     private OnNavButtonPressedListener mListener;
     private PieControlPanel mPanel;
-
+    
     private boolean mIsAssistantAvailable;
-
+    
     public PieControl(Context context, PieControlPanel panel) {
         mContext = context;
         mPanel = panel;
         mItemSize = (int) context.getResources().getDimension(R.dimen.pie_item_size);
     }
-
+    
     public PieMenu getPieMenu() {
         return mPie;
     }
-
+    
     public void init() {
         mPie.init();
     }
-
+    
     public void onConfigurationChanged() {
         if (mPie != null) mPie.onConfigurationChanged();
     }
-
+    
     public void attachToContainer(FrameLayout container) {
         if (mPie == null) {
             mPie = new PieMenu(mContext, mPanel);
             LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,
-                    LayoutParams.MATCH_PARENT);
+                                               LayoutParams.MATCH_PARENT);
             mPie.setLayoutParams(lp);
             populateMenu();
         }
         container.addView(mPie);
     }
-
+    
     public void removeFromContainer(FrameLayout container) {
         container.removeView(mPie);
     }
-
+    
     public void forceToTop(FrameLayout container) {
         if (mPie.getParent() != null) {
             container.removeView(mPie);
             container.addView(mPie);
         }
     }
-
+    
     protected void setIsAssistantAvailable(boolean isAvailable) {
         mIsAssistantAvailable = isAvailable;
     }
-
+    
     public boolean onTouchEvent(MotionEvent event) {
         return mPie.onTouchEvent(event);
     }
-
+    
     public void populateMenu() {
         mBack = makeItem(R.drawable.ic_sysbar_back, 1, BACK_BUTTON, false);
         mHome = makeItem(R.drawable.ic_sysbar_home, 1, HOME_BUTTON, false);
         mRecent = makeItem(R.drawable.ic_sysbar_recent, 1, RECENT_BUTTON, false);
-        mLastApp = makeItem(R.drawable.ic_sysbar_lastapp, 1, LAST_APP_BUTTON, true);
+        mLastApp = makeItem(R.drawable.ic_sysbar_lastapp_side, 1, LAST_APP_BUTTON, true);
         mMenu = makeItem(R.drawable.ic_sysbar_menu, 1, MENU_BUTTON, true);
-        mPie.addItem(mMenu);
         mPie.addItem(mLastApp);
-
+        mPie.addItem(mMenu);
+        
         if(mIsAssistantAvailable) {
             mSearch = makeItem(R.drawable.ic_sysbar_search_side, 1, SEARCH_BUTTON, true);
             mPie.addItem(mSearch);
         }
-
+        
         mPie.addItem(mRecent);
         mPie.addItem(mHome);
         mPie.addItem(mBack);
     }
-
+    
     @Override
     public void onClick(View v) {
         if (mListener != null) {
             mListener.onNavButtonPressed((String) v.getTag());
         }
     }
-
+    
     protected PieItem makeItem(int image, int l, String name, boolean lesser) {
         ImageView view = new ImageView(mContext);
         view.setImageResource(image);
@@ -153,21 +153,21 @@ public class PieControl implements OnClickListener {
         view.setOnClickListener(this);
         return new PieItem(view, mContext, l, name, lesser);
     }
-
+    
     public void show(boolean show) {
         mPie.show(show);
     }
-
+    
     public void setCenter(int x, int y) {
         mPie.setCenter(x, y);
     }
-
+    
     public void setOnNavButtonPressedListener(OnNavButtonPressedListener listener) {
         mListener = listener;
     }
-
+    
     public interface OnNavButtonPressedListener {
         public void onNavButtonPressed(String buttonName);
     }
-
+    
 }

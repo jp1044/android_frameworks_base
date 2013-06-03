@@ -19,6 +19,7 @@ package com.android.systemui.statusbar;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityOptions;
+import android.app.KeyguardManager;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -54,7 +55,7 @@ import com.android.systemui.statusbar.PieControl.OnNavButtonPressedListener;
 import java.util.List;
 
 public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNavButtonPressedListener {
-
+    
     private Handler mHandler;
     private boolean mShowing;
     private boolean mMenuButton;
@@ -68,39 +69,41 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNa
     private View mTrigger;
     private WindowManager mWindowManager;
     private Display mDisplay;
+    private KeyguardManager mKeyguardManger;
     
     ViewGroup mContentFrame;
     Rect mContentArea = new Rect();
-
+    
     private BaseStatusBar mStatusBar;
-
+    
     public PieControlPanel(Context context) {
         this(context, null);
     }
-
+    
     public PieControlPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         mWindowManager = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+        mKeyguardManger = (KeyguardManager) mContext.getSystemService(Context.KEYGUARD_SERVICE);
         mDisplay = mWindowManager.getDefaultDisplay();
         mPieControl = new PieControl(context, this);
         mPieControl.setOnNavButtonPressedListener(this);
         mOrientation = Gravity.BOTTOM;
         mMenuButton = false;
     }
-
+    
     public boolean currentAppUsesMenu() {
         return mMenuButton;
     }
-
+    
     public void setMenu(boolean state) {
         mMenuButton = state;
     }
-
+    
     public int getOrientation() {
         return mOrientation;
     }
-
+    
     public int getDegree() {
         switch(mOrientation) {
             case Gravity.LEFT: return 180;
@@ -110,51 +113,51 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNa
         }
         return 0;
     }
-
+    
     public BaseStatusBar getBar() {
         return mStatusBar;
     }
-
+    
     public void animateCollapsePanels() {
         mPieControl.getPieMenu().getStatusPanel().hidePanels(true);
     }
-
+    
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return mPieControl.onTouchEvent(event);
     }
-
+    
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
     }
-
+    
     @Override
     protected void onAttachedToWindow () {
         super.onAttachedToWindow();
     }
-
+    
     static private int[] gravityArray = {Gravity.BOTTOM, Gravity.LEFT, Gravity.TOP, Gravity.RIGHT, Gravity.BOTTOM, Gravity.LEFT};
-    static public int findGravityOffset(int gravity) {    
+    static public int findGravityOffset(int gravity) {
         for (int gravityIndex = 1; gravityIndex < gravityArray.length - 2; gravityIndex++) {
             if (gravity == gravityArray[gravityIndex])
                 return gravityIndex;
         }
         return 4;
     }
-
+    
     public void bumpConfiguration() {
         if (Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.PIE_STICK, 1) == 1) {
-
+                                   Settings.System.PIE_STICK, 1) == 1) {
+            
             // Get original offset
             int gravityIndex = findGravityOffset(convertPieGravitytoGravity(
-                    Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.PIE_GRAVITY, 3)));
+                                                                            Settings.System.getInt(mContext.getContentResolver(),
+                                                                                                   Settings.System.PIE_GRAVITY, 3)));
             
             // Orient Pie to that place
             reorient(gravityArray[gravityIndex], false);
-
+            
             // Now re-orient it for landscape orientation
             switch(mDisplay.getRotation()) {
                 case Surface.ROTATION_270:
@@ -165,11 +168,11 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNa
                     break;
             }
         }
-
+        
         show(false);
         if (mPieControl != null) mPieControl.onConfigurationChanged();
     }
-
+    
     public void init(Handler h, BaseStatusBar statusbar, View trigger, int orientation) {
         mHandler = h;
         mStatusBar = (BaseStatusBar) statusbar;
@@ -177,7 +180,7 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNa
         mOrientation = orientation;
         mPieControl.init();
     }
-
+    
     static public int convertGravitytoPieGravity(int gravity) {
         switch(gravity) {
             case Gravity.LEFT:  return 0;
@@ -186,7 +189,7 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNa
             default:            return 3;
         }
     }
-
+    
     static public int convertPieGravitytoGravity(int gravity) {
         switch(gravity) {
             case 0:  return Gravity.LEFT;
@@ -195,18 +198,18 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNa
             default: return Gravity.BOTTOM;
         }
     }
-
+    
     public void reorient(int orientation, boolean storeSetting) {
         mOrientation = orientation;
         mWindowManager.removeView(mTrigger);
         mWindowManager.addView(mTrigger, BaseStatusBar
-                .getPieTriggerLayoutParams(mContext, mOrientation));
+                               .getPieTriggerLayoutParams(mContext, mOrientation));
         show(mShowing);
         if (storeSetting) {
             int gravityOffset = mOrientation;
             if (Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.PIE_STICK, 1) == 1) {
-
+                                       Settings.System.PIE_STICK, 1) == 1) {
+                
                 gravityOffset = findGravityOffset(mOrientation);
                 switch(mDisplay.getRotation()) {
                     case Surface.ROTATION_270:
@@ -221,10 +224,10 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNa
                 }
             }
             Settings.System.putInt(mContext.getContentResolver(),
-                    Settings.System.PIE_GRAVITY, convertGravitytoPieGravity(gravityOffset));
+                                   Settings.System.PIE_GRAVITY, convertGravitytoPieGravity(gravityOffset));
         }
     }
-
+    
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
@@ -235,21 +238,21 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNa
         mPieControl.forceToTop(this);
         show(false);
     }
-
+    
     public boolean isShowing() {
         return mShowing;
     }
-
+    
     public PointF getSize() {
         return new PointF(mWidth, mHeight);
     }
-
+    
     public void show(boolean show) {
         mShowing = show;
         setVisibility(show ? View.VISIBLE : View.GONE);
         mPieControl.show(show);
     }
-
+    
     // verticalPos == -1 -> center PIE
     public void show(int verticalPos) {
         mShowing = true;
@@ -269,22 +272,22 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNa
             case Gravity.RIGHT:
                 mPieControl.setCenter(mWidth, (verticalPos != -1 ? verticalPos : mHeight / 2));
                 break;
-            case Gravity.BOTTOM: 
+            case Gravity.BOTTOM:
                 mPieControl.setCenter((verticalPos != -1 ? verticalPos : mWidth / 2), mHeight);
                 break;
         }
         mPieControl.show(true);
     }
-
+    
     public boolean isInContentArea(int x, int y) {
         mContentArea.left = mContentFrame.getLeft() + mContentFrame.getPaddingLeft();
         mContentArea.top = mContentFrame.getTop() + mContentFrame.getPaddingTop();
         mContentArea.right = mContentFrame.getRight() - mContentFrame.getPaddingRight();
         mContentArea.bottom = mContentFrame.getBottom() - mContentFrame.getPaddingBottom();
-
+        
         return mContentArea.contains(x, y);
     }
-
+    
     public void onNavButtonPressed(String buttonName) {
         if (buttonName.equals(PieControl.BACK_BUTTON)) {
             injectKeyDelayed(KeyEvent.KEYCODE_BACK);
@@ -300,34 +303,34 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNa
             toggleLastApp();
         }
     }
-
+    
     private Intent getAssistIntent() {
         Intent intent = ((SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE))
-                .getAssistIntent(mContext, UserHandle.USER_CURRENT);
+        .getAssistIntent(mContext, UserHandle.USER_CURRENT);
         return intent;
     }
-
+    
     private void launchAssistAction() {
         Intent intent = getAssistIntent();
         if(intent != null) {
             try {
                 ActivityOptions opts = ActivityOptions.makeCustomAnimation(mContext,
-                        R.anim.search_launch_enter, R.anim.search_launch_exit);
+                                                                           R.anim.search_launch_enter, R.anim.search_launch_exit);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivityAsUser(intent, opts.toBundle(),
-                        new UserHandle(UserHandle.USER_CURRENT));
+                                             new UserHandle(UserHandle.USER_CURRENT));
             } catch (ActivityNotFoundException e) {
             }
         }
     }
-
+    
     private void toggleLastApp() {
         int lastAppId = 0;
         int looper = 1;
         String packageName;
         final Intent intent = new Intent(Intent.ACTION_MAIN);
         final ActivityManager am = (ActivityManager) mContext
-                .getSystemService(Activity.ACTIVITY_SERVICE);
+        .getSystemService(Activity.ACTIVITY_SERVICE);
         String defaultHomePackage = "com.android.launcher";
         intent.addCategory(Intent.CATEGORY_HOME);
         final ResolveInfo res = mContext.getPackageManager().resolveActivity(intent, 0);
@@ -348,23 +351,27 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNa
             am.moveTaskToFront(lastAppId, am.MOVE_TASK_NO_USER_ACTION);
         }
     }
-
+    
     public void injectKeyDelayed(int keycode){
     	mInjectKeycode = keycode;
         mDownTime = SystemClock.uptimeMillis();
     	mHandler.removeCallbacks(onInjectKeyDelayed);
       	mHandler.postDelayed(onInjectKeyDelayed, 100);
     }
-
+    
     final Runnable onInjectKeyDelayed = new Runnable() {
-    	public void run() {
-            final long eventTime = SystemClock.uptimeMillis();
-            InputManager.getInstance().injectInputEvent(
-                    new KeyEvent(mDownTime, eventTime - 100, KeyEvent.ACTION_DOWN, mInjectKeycode, 0),
-                    InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
-            InputManager.getInstance().injectInputEvent(
-                    new KeyEvent(mDownTime, eventTime - 50, KeyEvent.ACTION_UP, mInjectKeycode, 0),
-                    InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
-    	}
-    };
+    public void run() {
+    final long eventTime = SystemClock.uptimeMillis();
+    InputManager.getInstance().injectInputEvent(
+                                                new KeyEvent(mDownTime, eventTime - 100, KeyEvent.ACTION_DOWN, mInjectKeycode, 0),
+                                                InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
+    InputManager.getInstance().injectInputEvent(
+                                                new KeyEvent(mDownTime, eventTime - 50, KeyEvent.ACTION_UP, mInjectKeycode, 0),
+                                                InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
+}
+};
+
+public boolean getKeyguardStatus() {
+return mKeyguardManger.isKeyguardLocked();
+}
 }
