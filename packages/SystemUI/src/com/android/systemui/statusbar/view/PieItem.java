@@ -38,7 +38,7 @@ import java.util.List;
  * Pie menu item
  */
 public class PieItem {
-    
+
     private Context mContext;
     private View mView;
     private int level;
@@ -53,7 +53,7 @@ public class PieItem {
     private String mName;
     private Path mPath;
     private boolean mIsLesser;
-    
+
     public PieItem(View view, Context context, int level, String name, boolean lesser) {
         mContext = context;
         mView = view;
@@ -64,123 +64,123 @@ public class PieItem {
         setName(name);
         mIsLesser = lesser;
     }
-    
+
     public void setLesser(boolean lesser) {
         mIsLesser = lesser;
     }
-    
+
     public boolean isLesser() {
         return mIsLesser;
     }
-    
+
     public void setPath(Path path) {
         mPath = path;
     }
-    
+
     public Path getPath() {
         return mPath;
     }
-    
+
     public boolean hasItems() {
         return mItems != null;
     }
-    
+
     public List<PieItem> getItems() {
         return mItems;
     }
-    
+
     public void addItem(PieItem item) {
         if (mItems == null) {
             mItems = new ArrayList<PieItem>();
         }
         mItems.add(item);
     }
-    
-    
+
+
     public void setName(String name) {
         mName = name;
         mView.setTag(mName);
     }
-    
+
     public String getName() {
         return mName;
     }
-    
+
     public void setAlpha(float alpha) {
         if (mView != null) {
             mView.setAlpha(alpha);
         }
     }
-    
+
     public float getAlpha() {
         if (mView != null) {
             return mView.getAlpha();
         }
         return 1;
     }
-    
+
     public void setAnimationAngle(float a) {
         animate = a;
     }
-    
+
     public float getAnimationAngle() {
         return animate;
     }
-    
+
     public void setEnabled(boolean enabled) {
         mEnabled = enabled;
     }
-    
+
     public void setSelected(boolean s) {
         mSelected = s;
         if (mView != null) {
             mView.setSelected(s);
         }
     }
-    
+
     public boolean isSelected() {
         return mSelected;
     }
-    
+
     public int getLevel() {
         return level;
     }
-    
+
     public void setGeometry(float st, float sw, int inside, int outside) {
         start = st;
         sweep = sw;
         inner = inside;
         outer = outside;
     }
-    
+
     public float getStart() {
         return start;
     }
-    
+
     public float getStartAngle() {
         return start + animate;
     }
-    
+
     public float getSweep() {
         return sweep;
     }
-    
+
     public int getInnerRadius() {
         return inner;
     }
-    
+
     public int getOuterRadius() {
         return outer;
     }
-    
+
     public View getView() {
         return mView;
     }
-    
+
     public void setIcon(int resId) {
         ((ImageView)mView).setImageResource(resId);
     }
-    
+
     public void setColor(int color) {
         ImageView imageView = ((ImageView) mView);
         Drawable drawable = imageView.getDrawable();
