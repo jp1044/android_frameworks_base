@@ -69,7 +69,7 @@ public class PhoneStatusBarView extends PanelBar {
 
     float mAlpha;
     int mAlphaMode;
-    int mStatusBarColor;
+    int mStatusBarColor =-1;
 
     private Runnable mUpdateInHomeAlpha = new Runnable() {
         @Override
@@ -129,7 +129,7 @@ public class PhoneStatusBarView extends PanelBar {
         Drawable bg = mContext.getResources().getDrawable(R.drawable.status_bar_background);
         if(bg instanceof ColorDrawable) {
             BackgroundAlphaColorDrawable bacd = new BackgroundAlphaColorDrawable(
-                    mStatusBarColor != -1 ? mStatusBarColor : ((ColorDrawable) bg).getColor());
+                    mStatusBarColor > 0 ? mStatusBarColor : ((ColorDrawable) bg).getColor());
             setBackground(bacd);
         }
     }
@@ -320,13 +320,18 @@ public class PhoneStatusBarView extends PanelBar {
      */
     protected void setBackgroundAlpha(float alpha) {
         Drawable bg = getBackground();
-        if (bg == null)
-            return;
+        if (bg == null) return;
         
         if(bg instanceof BackgroundAlphaColorDrawable) {
-            ((BackgroundAlphaColorDrawable) bg).setBgColor(mStatusBarColor);
+           if(mStatusBarColor > 0) {
+                if(isKeyguardEnabled()) {
+                     ((BackgroundAlphaColorDrawable) bg).setBgColor(-1);
+                } else {
+                    ((BackgroundAlphaColorDrawable) bg).setBgColor(mStatusBarColor);
+                }
+            }
         }
-        int a = (int) (alpha * 255);
+        int a = Math.round(alpha * 255);
         bg.setAlpha(a);
     }
 
