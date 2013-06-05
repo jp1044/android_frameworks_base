@@ -70,6 +70,10 @@ public class TvStatusBar extends BaseStatusBar {
     }
 
     @Override
+    public void animateCollapsePanels() {
+    }
+
+    @Override
     public void animateCollapsePanels(int flags) {
     }
 

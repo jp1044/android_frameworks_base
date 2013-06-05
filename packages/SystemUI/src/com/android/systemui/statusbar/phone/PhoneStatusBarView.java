@@ -49,8 +49,6 @@ import android.view.accessibility.AccessibilityEvent;
 
 import com.android.systemui.R;
 import com.android.systemui.statusbar.BackgroundAlphaColorDrawable;
-import com.android.internal.util.pie.PiePosition;
-
 
 public class PhoneStatusBarView extends PanelBar {
     private static final String TAG = "PhoneStatusBarView";
@@ -71,7 +69,7 @@ public class PhoneStatusBarView extends PanelBar {
 
     float mAlpha;
     int mAlphaMode;
-    int mStatusBarColor;
+    int mStatusBarColor =-1;
 
     private Runnable mUpdateInHomeAlpha = new Runnable() {
         @Override
@@ -131,7 +129,7 @@ public class PhoneStatusBarView extends PanelBar {
         Drawable bg = mContext.getResources().getDrawable(R.drawable.status_bar_background);
         if(bg instanceof ColorDrawable) {
             BackgroundAlphaColorDrawable bacd = new BackgroundAlphaColorDrawable(
-                    mStatusBarColor != -1 ? mStatusBarColor : ((ColorDrawable) bg).getColor());
+                    mStatusBarColor > 0 ? mStatusBarColor : ((ColorDrawable) bg).getColor());
             setBackground(bacd);
         }
     }
@@ -252,12 +250,6 @@ public class PhoneStatusBarView extends PanelBar {
         mBar.makeExpandedInvisibleSoon();
         mFadingPanel = null;
         mLastFullyOpenedPanel = null;
-
-        // show up you pie controls
-        mBar.updatePieTriggerMask(PiePosition.LEFT.FLAG
-                | PiePosition.TOP.FLAG
-                | PiePosition.RIGHT.FLAG
-                | PiePosition.TOP.FLAG);
     }
 
     @Override
@@ -266,14 +258,6 @@ public class PhoneStatusBarView extends PanelBar {
         if (openPanel != mLastFullyOpenedPanel) {
             openPanel.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
         }
-
-        // back off you pie controls!
-        if (mShouldFade) {
-            mBar.updatePieTriggerMask(PiePosition.LEFT.FLAG
-                    | PiePosition.RIGHT.FLAG
-                    | PiePosition.TOP.FLAG);
-        }
-
         mFadingPanel = openPanel;
         mLastFullyOpenedPanel = openPanel;
         mShouldFade = true; // now you own the fade, mister
@@ -336,13 +320,18 @@ public class PhoneStatusBarView extends PanelBar {
      */
     protected void setBackgroundAlpha(float alpha) {
         Drawable bg = getBackground();
-        if (bg == null)
-            return;
+        if (bg == null) return;
         
         if(bg instanceof BackgroundAlphaColorDrawable) {
-            ((BackgroundAlphaColorDrawable) bg).setBgColor(mStatusBarColor);
+           if(mStatusBarColor > 0) {
+                if(isKeyguardEnabled()) {
+                     ((BackgroundAlphaColorDrawable) bg).setBgColor(-1);
+                } else {
+                    ((BackgroundAlphaColorDrawable) bg).setBgColor(mStatusBarColor);
+                }
+            }
         }
-        int a = (int) (alpha * 255);
+        int a = Math.round(alpha * 255);
         bg.setAlpha(a);
     }
 

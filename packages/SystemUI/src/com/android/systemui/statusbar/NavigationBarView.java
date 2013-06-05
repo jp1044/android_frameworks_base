@@ -569,7 +569,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
 
             }
         }
-        getSearchLight().setVisibility(keygaurdProbablyEnabled ? View.VISIBLE : View.GONE);
         updateMenuArrowKeys();
         updateKeyguardAlpha();
     }
