@@ -703,7 +703,9 @@ public abstract class PreferenceActivity extends ListActivity implements
      * enough.
      */
     public boolean onIsMultiPane() {
-        return Settings.System.getBoolean(getContentResolver(), Settings.System.FORCE_DUAL_PANEL, false);
+        boolean preferMultiPane = getResources().getBoolean(
+                    com.android.internal.R.bool.preferences_prefer_dual_pane);
+        return preferMultiPane;
     }
 
     /**

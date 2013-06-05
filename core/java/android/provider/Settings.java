@@ -3457,11 +3457,6 @@ public final class Settings {
         public static final String NOTIFICATION_CONVERT_SOUND_TO_VIBRATION = "convert_sound_to_vibration";
 
         /**
-         * Force dual panel for settings
-         */
-        public static final String FORCE_DUAL_PANEL = "force_dualpanel";
-
-        /**
          * Use alternative application resolver
          */
         public static final String ACTIVITY_RESOLVER_USE_ALT = "activity_resolver_use_alt";
