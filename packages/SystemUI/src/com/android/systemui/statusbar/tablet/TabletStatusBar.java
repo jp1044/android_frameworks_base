@@ -513,9 +513,6 @@ public class TabletStatusBar extends BaseStatusBar implements
         mDummyView = new View(mContext);
         mWindowManager.addView(mDummyView, getDummyTriggerLayoutParams(mContext,Gravity.TOP));
 
-        // set recents activity navigation bar view
-        RecentsActivity.addNavigationCallback(this);
-
         mBarContents = (ViewGroup) sb.findViewById(R.id.bar_contents);
 
         // the whole right-hand side of the bar
