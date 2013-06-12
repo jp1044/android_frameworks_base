@@ -1816,8 +1816,11 @@ final class ActivityStack {
             startSpecificActivityLocked(next, true, true);
         }
 
+        handlePrivacyGuardNotification(prev, next);
+
         return true;
     }
+
 
     public void pf(String tag, ActivityRecord r) {
         if (r == null) return;
@@ -1848,6 +1851,38 @@ final class ActivityStack {
         for (int i = 0; i < r.stack.mHistory.size(); i++) {
             ActivityRecord hr = r.stack.mHistory.get(i);
             android.util.Log.d("PARANOID", "  --- " + i + ": " + hr.packageName + " new="+ hr.newTask + " multi=" + hr.multiWindow + " top=" + hr.topIntent);
+        }
+    }
+
+    private final void handlePrivacyGuardNotification(ActivityRecord prev, ActivityRecord next) {
+        boolean curPrivacy = false;
+        boolean prevPrivacy = false;
+
+        if (next != null) {
+            try {
+                curPrivacy = AppGlobals.getPackageManager().getPrivacyGuardSetting(
+                        next.packageName, next.userId);
+            } catch (RemoteException e) {
+                // nothing
+            }
+        }
+        if (prev != null) {
+            try {
+                prevPrivacy = AppGlobals.getPackageManager().getPrivacyGuardSetting(
+                        prev.packageName, prev.userId);
+            } catch (RemoteException e) {
+                // nothing
+            }
+        }
+        if (prevPrivacy && !curPrivacy) {
+            Message msg = mService.mHandler.obtainMessage(
+                    ActivityManagerService.CANCEL_PRIVACY_NOTIFICATION_MSG, prev.userId);
+            msg.sendToTarget();
+        } else if ((!prevPrivacy && curPrivacy) ||
+                (prevPrivacy && curPrivacy && !next.packageName.equals(prev.packageName))) {
+            Message msg = mService.mHandler.obtainMessage(
+                    ActivityManagerService.POST_PRIVACY_NOTIFICATION_MSG, next);
+            msg.sendToTarget();
         }
     }
 
