@@ -5319,10 +5319,7 @@ public class Activity extends ContextThemeWrapper
 
         if (mWindow != null && mWindow.mIsMultiWindow && !isFinishing()) {
             android.util.Log.d("PARANOID.performStop()->finish()", "Pkg="
-                    + mActivityInfo.packageName
-                    + " top=" + mActivityInfo.topIntent
-                    + " multi=" + mActivityInfo.multiWindow
-                    + " new=" + mActivityInfo.newTask);
+                    + mActivityInfo.packageName);
             finish();
         }
     }
