@@ -3044,9 +3044,15 @@ public final class Settings {
          * @hide
          */
         public static final String QUIET_HOURS_DIM = "quiet_hours_dim";
+                
+        /**
+         * Do you want popups/floating windows?
+         * @hide
+         */
+        public static final String WE_WANT_POPUPS = "we_want_popups";
 
         /**
-         * LiquidSmooth Settings (PIE)
+         * PA PIE Settings
          */
 
         /**
