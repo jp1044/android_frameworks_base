@@ -55,13 +55,17 @@ import android.text.TextUtils;
 import android.text.method.TextKeyListener;
 import android.util.AttributeSet;
 import android.util.EventLog;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.util.Slog;
 import android.util.SparseArray;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.ContextThemeWrapper;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -5056,11 +5060,53 @@ public class Activity extends ContextThemeWrapper
             CharSequence title, Activity parent, String id,
             NonConfigurationInstances lastNonConfigurationInstances,
             Configuration config) {
+
         attachBaseContext(context);
 
         mFragments.attachActivity(this, mContainer, null);
-        
-        mWindow = PolicyManager.makeNewWindow(this);
+
+        if (intent != null && (intent.getFlags()&Intent.FLAG_MULTI_WINDOW) == Intent.FLAG_MULTI_WINDOW) {
+            TypedArray styleArray = context.obtainStyledAttributes(info.theme, com.android.internal.R.styleable.Window);
+            TypedValue backgroundValue = styleArray.peekValue(com.android.internal.R.styleable.Window_windowBackground);
+
+            if (backgroundValue.toString().contains("light")) {
+                context.getTheme().applyStyle(com.android.internal.R.style.Theme_DeviceDefault_MultiWindowLight, true);
+            } else {
+                context.getTheme().applyStyle(com.android.internal.R.style.Theme_DeviceDefault_MultiWindow, true);
+            }
+
+            parent = null;
+
+            mWindow = PolicyManager.makeNewWindow(context);
+            mWindow.mIsMultiWindow = true;
+            mWindow.setCloseOnTouchOutsideIfNotSet(true);
+            mWindow.setGravity(Gravity.CENTER);
+            mWindow.requestFeature(Window.FEATURE_ACTION_BAR);
+
+            if (styleArray.getBoolean(com.android.internal.R.styleable.Window_windowNoTitle, false)) {
+                mWindow.requestFeature(Window.FEATURE_NO_TITLE);
+            }
+            mWindow.setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND,
+                    WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            WindowManager.LayoutParams params = mWindow.getAttributes(); 
+            params.alpha = 1f;
+            params.dimAmount = 0.6f;
+            mWindow.setAttributes((android.view.WindowManager.LayoutParams) params);
+
+            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            DisplayMetrics metrics = new DisplayMetrics();
+            display.getMetrics(metrics);
+
+            if (metrics.heightPixels > metrics.widthPixels) {
+                mWindow.setLayout((int)(metrics.widthPixels * 0.9f), (int)(metrics.heightPixels * 0.7f));
+            } else {
+                mWindow.setLayout((int)(metrics.widthPixels * 0.7f), (int)(metrics.heightPixels * 0.8f));
+            }
+        } else {
+            mWindow = PolicyManager.makeNewWindow(this);
+        }
+
         mWindow.setCallback(this);
         mWindow.getLayoutInflater().setPrivateFactory(this);
         if (info.softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {
@@ -5218,7 +5264,13 @@ public class Activity extends ContextThemeWrapper
         onUserInteraction();
         onUserLeaveHint();
     }
-    
+
+    void pa_stacktrace() {
+        RuntimeException here = new RuntimeException("here");
+        here.fillInStackTrace();
+        Slog.i("PARANOID.performStop", "Current stack", here);
+    }
+
     final void performStop() {
         if (mLoadersStarted) {
             mLoadersStarted = false;
@@ -5264,6 +5316,12 @@ public class Activity extends ContextThemeWrapper
             mStopped = true;
         }
         mResumed = false;
+
+        if (mWindow != null && mWindow.mIsMultiWindow && !isFinishing()) {
+            android.util.Log.d("PARANOID.performStop()->finish()", "Pkg="
+                    + mActivityInfo.packageName);
+            finish();
+        }
     }
 
     final void performDestroy() {
