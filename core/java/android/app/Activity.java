@@ -5101,12 +5101,14 @@ public class Activity extends ContextThemeWrapper
             if (styleArray.getBoolean(com.android.internal.R.styleable.Window_windowNoTitle, false)) {
                 mWindow.requestFeature(Window.FEATURE_NO_TITLE);
             }
-            mWindow.setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND,
-                    WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            WindowManager.LayoutParams params = mWindow.getAttributes(); 
-            params.alpha = 1f;
-            params.dimAmount = 0.6f;
-            mWindow.setAttributes((android.view.WindowManager.LayoutParams) params);
+            if (this instanceof LayerActivity || android.os.Process.myUid() == android.os.Process.SYSTEM_UID) {
+                mWindow.setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND,
+                        WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                WindowManager.LayoutParams params = mWindow.getAttributes();
+                params.alpha = 1f;
+                params.dimAmount = 0.25f;
+                mWindow.setAttributes((android.view.WindowManager.LayoutParams) params);
+            }
 
             WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
             Display display = wm.getDefaultDisplay();
