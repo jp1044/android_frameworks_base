@@ -1478,8 +1478,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mLongPressOnAssistBehavior = Settings.System.getIntForUser(resolver,
                             Settings.System.KEY_ASSIST_LONG_PRESS_ACTION,
                             KEY_ACTION_VOICE_SEARCH, UserHandle.USER_CURRENT);
-                    mHasMenuKeyEnabled |= (mPressOnAssistBehavior == KEY_ACTION_MENU) ||
-                        (mLongPressOnAssistBehavior == KEY_ACTION_MENU);
                 }
                 if (mHasAppSwitchKey) {
                     mPressOnAppSwitchBehavior = Settings.System.getIntForUser(resolver,
@@ -1488,8 +1486,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mLongPressOnAppSwitchBehavior = Settings.System.getIntForUser(resolver,
                             Settings.System.KEY_APP_SWITCH_LONG_PRESS_ACTION,
                             KEY_ACTION_NOTHING, UserHandle.USER_CURRENT);
-                    mHasMenuKeyEnabled |= (mPressOnAppSwitchBehavior == KEY_ACTION_MENU) ||
-                        (mLongPressOnAppSwitchBehavior == KEY_ACTION_MENU);
                 }
             }
 
