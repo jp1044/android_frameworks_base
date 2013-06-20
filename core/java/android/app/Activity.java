@@ -5066,7 +5066,7 @@ public class Activity extends ContextThemeWrapper
 
         mFragments.attachActivity(this, mContainer, null);
 
-        boolean floating = (intent.getFlags()&Intent.FLAG_FLOATING_WINDOW) == Intent.FLAG_FLOATING_WINDOW;
+        boolean floating = (intent.getFlags()&Intent.FLAG_MULTI_WINDOW) == Intent.FLAG_MULTI_WINDOW;
         boolean mWeWantPopups = (Settings.System.getInt(getContentResolver(), Settings.System.WE_WANT_POPUPS, 0) == 1);
 
         if ((intent != null) && floating && mWeWantPopups) {
