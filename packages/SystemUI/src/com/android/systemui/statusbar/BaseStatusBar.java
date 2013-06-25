@@ -1179,12 +1179,11 @@ public abstract class BaseStatusBar extends SystemUI implements
             }
 
             if (mIntent != null) {
-                if (mFloat) {
-                    Intent transparent = new Intent(mContext, com.android.systemui.Transparent.class);
-                    transparent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    transparent.addFlags(Intent.FLAG_MULTI_WINDOW);
-                    mContext.startActivity(transparent);
-                }
+                Intent transparent = new Intent(mContext, com.android.systemui.Transparent.class);
+                transparent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                transparent.addFlags(Intent.FLAG_MULTI_WINDOW);
+                mContext.startActivity(transparent);
+
 
                 int[] pos = new int[2];
                 v.getLocationOnScreen(pos);
