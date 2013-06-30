@@ -1265,7 +1265,7 @@ public abstract class BaseStatusBar extends SystemUI implements
                 public void run() {
                     animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE);
                 }
-            }, 100);
+            }, 225);
         }
 
         return entry.notification;
