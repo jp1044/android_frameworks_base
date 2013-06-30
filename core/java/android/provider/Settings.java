@@ -2918,7 +2918,7 @@ public final class Settings {
          * @hide
          */
         public static final String AUTO_HIDE_STATUSBAR = "auto_hide_statusbar";
-
+        
         /**
          * Whether Status bar can be shown by swiping down in fullscreen apps
          * @hide
@@ -2930,7 +2930,7 @@ public final class Settings {
          * @hide
          */
         public static final String FULLSCREEN_STATUSBAR_TIMEOUT = "fullscreen_statusbar_timeout"; 
-        
+
         /**
          * Whether Status Bar is currently hidden or not
          * @hide
