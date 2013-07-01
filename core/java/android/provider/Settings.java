@@ -3530,6 +3530,14 @@ public final class Settings {
         public static final String STATUS_NAV_BAR_ALPHA_MODE = "status_nav_bar_alpha_mode";
 
         /**
+         * Whether to allow notification vibration while notification alerts are disabled
+         * (e.g. during phone calls). The vibration pattern to be used will be a subtle one;
+         * custom vibration is disabled at that point.
+         * @hide
+         */
+        public static final String NOTIFICATION_VIBRATE_DURING_ALERTS_DISABLED = "vibrate_while_no_alerts";
+
+        /**
          * Custom navring actions
          *
          * @hide
@@ -3792,6 +3800,7 @@ public final class Settings {
             NOTIFICATION_LIGHT_PULSE_DEFAULT_COLOR,
             NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_ON,
             NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_OFF,
+            NOTIFICATION_VIBRATE_DURING_ALERTS_DISABLED,
             SIP_CALL_OPTIONS,
             SIP_RECEIVE_CALLS,
             POINTER_SPEED,
