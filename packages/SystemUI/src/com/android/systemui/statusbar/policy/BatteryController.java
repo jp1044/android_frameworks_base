@@ -86,7 +86,7 @@ public class BatteryController extends BroadcastReceiver {
             new ArrayList<BatteryStateChangeCallback>();
 
     public interface BatteryStateChangeCallback {
-        public void onBatteryLevelChanged(int level, int status);
+        public void onBatteryLevelChanged(int level, boolean pluggedIn);
     }
 
     public BatteryController(Context context) {
@@ -120,7 +120,7 @@ public class BatteryController extends BroadcastReceiver {
     public void addStateChangedCallback(BatteryStateChangeCallback cb) {
         mChangeCallbacks.add(cb);
         // trigger initial update
-        cb.onBatteryLevelChanged(getBatteryLevel(), getBatteryStatus());
+        cb.onBatteryLevelChanged(getBatteryLevel(), isBatteryStatusCharging());
     }
 
     public void removeStateChangedCallback(BatteryStateChangeCallback cb) {
@@ -209,7 +209,7 @@ public class BatteryController extends BroadcastReceiver {
         }
 
         for (BatteryStateChangeCallback cb : mChangeCallbacks) {
-            cb.onBatteryLevelChanged(level, getBatteryStatus());
+            cb.onBatteryLevelChanged(level, isBatteryStatusCharging());
         }
     }
 
