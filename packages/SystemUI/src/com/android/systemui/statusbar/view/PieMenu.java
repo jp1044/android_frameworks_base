@@ -774,11 +774,7 @@ public class PieMenu extends FrameLayout {
             int state;
 
             // Draw background
-<<<<<<< HEAD
-            if (mStatusMode != -1) {
-=======
-            if (mStatusMode != -1 && !mNavbarZero && !mIsProtected) {
->>>>>>> 9dbcba6... Enable Bare style PIE on protected lock screen
+            if (mStatusMode != -1 && !mIsProtected) {
                 canvas.drawARGB((int)(mAnimators[ANIMATOR_DEC_SPEED15].fraction * 0xcc), 0, 0, 0);
             }
 
